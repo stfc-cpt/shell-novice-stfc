@@ -144,10 +144,11 @@ jobs:
           APP_TOKEN: ${{ steps.app-token.outputs.token }}
         shell: bash
         run: |
-          cd /home/rstudio/lesson
+          # run in the default workspace dir (/__w/...), which is the path
+          # marked safe by "Mark Repository as Safe"
           set -f
           # drop credential files registered by earlier checkouts
-          git config --local --name-only --get-regexp '^includeif\.gitdir:' | while read -r k; do
+          { git config --local --name-only --get-regexp '^includeif\.gitdir:' || true; } | while read -r k; do
             git config --local --unset-all "$k"
           done
           # remove any leftover extraheader, then set ours
