@@ -59,14 +59,6 @@ jobs:
         id: build-check
         uses: carpentries/actions/build-preflight@main
 
-      - name: "Generate app token"
-        if: steps.build-check.outputs.do-build == 'true'
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-
       - name: "Checkout Lesson"
         if: steps.build-check.outputs.do-build == 'true'
         uses: actions/checkout@v6
@@ -78,7 +70,7 @@ jobs:
         with:
           WORKBENCH_TAG: ${{ vars.WORKBENCH_TAG }}
           renv-needed: ${{ steps.build-check.outputs.renv-needed }}
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   full-build:
     name: "Build Full Site"
@@ -107,6 +99,15 @@ jobs:
         - ${{ github.workspace }}:/home/rstudio/lesson
       options: --cpus 1
     steps:
+      # GitHub App token: the App is on the ruleset bypass list, so pushes
+      # made with this token are allowed to update gh-pages.
+      - name: "Generate app token"
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v6
 
       - name: "Debugging Info"
@@ -134,6 +135,26 @@ jobs:
           role-to-assume: ${{ secrets.AWS_GH_OIDC_ARN }}
           aws-region: ${{ secrets.AWS_GH_OIDC_REGION }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # The nested checkout inside build-container-deps replaces the git
+      # credentials with GITHUB_TOKEN, so re-point them at the app token
+      # immediately before the deploy step.
+      - name: "Use app token for pushes"
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        shell: bash
+        run: |
+          cd /home/rstudio/lesson
+          set -f
+          # drop credential files registered by earlier checkouts
+          git config --local --name-only --get-regexp '^includeif\.gitdir:' | while read -r k; do
+            git config --local --unset-all "$k"
+          done
+          # remove any leftover extraheader, then set ours
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          B64=$(printf 'x-access-token:%s' "$APP_TOKEN" | base64 -w0)
+          echo "::add-mask::$B64"
+          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $B64"
 
       - name: "Run Container and Build Site"
         id: build-and-deploy
