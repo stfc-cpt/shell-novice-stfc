@@ -11,7 +11,6 @@
     "workspaceFolder": "/home/rstudio/lessons/${localWorkspaceFolderBasename}",
     "mounts": [
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/rstudio/.ssh,type=bind,consistency=cached",
-        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gnupg,target=/home/rstudio/.gnupg,type=bind,consistency=cached"
     ],
     "build": {
         "dockerfile": "Dockerfile",
@@ -25,6 +24,5 @@
     },
     "containerEnv": {
         "DISABLE_AUTH": "true",
-        "GPG_TTY": "/dev/pts/0"
     }
 }

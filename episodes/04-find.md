@@ -1,11 +1,12 @@
 ---
 title: Finding Things
 teaching: 25
-exercises: 20
+exercises: 10
 ---
 
 ::::::::::::::::::::::::::::::::::::::: objectives
 
+- Display the contents of a file with `cat`.
 - Use `grep` to select lines from text files that match simple patterns.
 - Use `find` to find files and directories whose names match simple patterns.
 - Use the output of one command as the command-line argument(s) to another command.
@@ -16,6 +17,7 @@ exercises: 20
 :::::::::::::::::::::::::::::::::::::::: questions
 
 - How can I find files?
+- How can I view the contents of a file?
 - How can I find things in files?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -42,7 +44,7 @@ we're going to be working in the writing subdirectory:
 
 ```bash
 $ cd
-$ cd Desktop/shell-lesson-data/exercise-data/writing
+$ cd stfc-carpentries-shell-novice/exercise-data/writing
 $ cat haiku.txt
 ```
 
@@ -60,6 +62,184 @@ Today it is not working
 Software is like that.
 ```
 
+## Viewing files with `cat`
+
+We just used `cat` to display the whole of `haiku.txt` on the screen.
+
+`cat` is short for **concatenate**.
+Given one file, it prints that file to the screen;
+given several files, it prints them one after the other:
+
+```bash
+$ cat haiku.txt haiku.txt
+```
+
+```output
+The Tao that is seen
+Is not the true Tao, until
+You bring fresh toner.
+
+With searching comes loss
+and the presence of absence:
+"My Thesis" not found.
+
+Yesterday it worked
+Today it is not working
+Software is like that.
+
+The Tao that is seen
+Is not the true Tao, until
+You bring fresh toner.
+
+With searching comes loss
+and the presence of absence:
+"My Thesis" not found.
+
+Yesterday it worked
+Today it is not working
+Software is like that.
+```
+
+See how the file appeared twice?
+That is where the name comes from: `cat` glues files together.
+
+`cat` always prints the *entire* file.
+That is perfect for something short like our haiku,
+but it is not how we want to read a large file.
+For that we have two more tools: `head` and `tail`.
+
+## Looking at the start and end: `head` and `tail`
+
+Our `writing` directory also contains `LittleWomen.txt`, the full text of
+the novel --- over twenty thousand lines.
+Try `cat` on it and the screen fills with text faster than you can read it.
+
+```bash
+$ cat LittleWomen.txt
+```
+
+```output
+The Project Gutenberg EBook of Little Women, by Louisa May Alcott
+
+This eBook is for the use of anyone anywhere at no cost and with
+almost no restrictions whatsoever...
+[ thousands of lines later ]
+subscribe to our email newsletter to hear about new eBooks.
+```
+
+(Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop a command like this once it is
+doing something you did not want.)
+
+To see just the *beginning* of a large file, use `head`.
+It prints the first 10 lines by default:
+
+```bash
+$ head LittleWomen.txt
+```
+
+```output
+The Project Gutenberg EBook of Little Women, by Louisa May Alcott
+
+This eBook is for the use of anyone anywhere at no cost and with
+almost no restrictions whatsoever.  You may copy it, give it away or
+re-use it under the terms of the Project Gutenberg License included
+with this eBook or online at www.gutenberg.net
+
+
+Title: Little Women
+```
+
+And `tail` prints the *last* 10 lines.
+For log-like files this is often the end you want: recent entries are at the end.
+
+```bash
+$ tail LittleWomen.txt
+```
+
+```output
+
+
+Most people start at our Web site which has the main PG search facility:
+
+     http://www.gutenberg.net
+
+This Web site includes information about Project Gutenberg-tm,
+including how to make donations to the Project Gutenberg Literary
+Archive Foundation, how to help produce our new eBooks, and how to
+subscribe to our email newsletter to hear about new eBooks.
+```
+
+Both accept the `-n` flag to change the number of lines:
+
+```bash
+$ head -n 3 LittleWomen.txt
+```
+
+```output
+The Project Gutenberg EBook of Little Women, by Louisa May Alcott
+
+This eBook is for the use of anyone anywhere at no cost and with
+```
+
+These are good first checks on a log or a data file:
+look at the first and last few lines to see what you have,
+instead of reading the whole thing.
+
+### Watching a file as it grows: `tail -f`
+
+`tail` also has a follow mode, `tail -f`, which you can use to follow
+a file as it grows.
+
+To see this, open a second terminal
+(in JupyterLab, click the **+** button and choose **Terminal** again).
+
+In tab 2, run this loop and leave it alone:
+
+```bash
+$ while true; do fortune >> fortunes.txt; sleep 2; done
+```
+
+You do not need to understand this loop yet.
+Treat it as a small machine that reads a fortune and appends it to the file
+`fortunes.txt`, one every two seconds, forever.
+It prints nothing, and the prompt does not come back while it runs,
+because the command has not finished.
+Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it, and the prompt returns.
+This is worth remembering in general:
+<kbd>Ctrl</kbd>+<kbd>C</kbd> stops whatever command is running in the
+foreground. (The `>>` writes into the file; we meet it properly in the next
+few episodes.)
+
+Now switch to tab 1 and follow the file:
+
+```bash
+$ tail -f fortunes.txt
+```
+
+`tail -f` first shows whatever is already in the file, then waits.
+Each time the loop appends another fortune, it appears here straight away
+(yours will be different):
+
+```output
+You will inherit some money or a small piece of land.
+
+Q: How many surrealists does it take to change a light bulb?
+A: Two: one to hold the giraffe, one to fill the bathtub
+   with brightly colored machine tools.
+
+You like to form new friendships or make new alliances.
+```
+
+To finish, press <kbd>Ctrl</kbd>+<kbd>C</kbd> in tab 1 to stop
+`tail -f`, then press <kbd>Ctrl</kbd>+<kbd>C</kbd> in tab 2 to stop the
+fortune loop. Both prompts come back.
+
+This is how you follow a running job's log:
+leave `tail -f` open while the job writes to the file.
+
+Later in the lesson we will also meet `less`,
+for browsing a long file one screen at a time.
+
 Let's find lines that contain the word 'not':
 
 ```bash
@@ -68,7 +248,7 @@ $ grep not haiku.txt
 
 ```output
 Is not the true Tao, until
-"My Thesis" not found
+"My Thesis" not found.
 Today it is not working
 ```
 
@@ -196,18 +376,21 @@ we can add `-r` (recursive) to our `grep` command
 to search for a pattern through all the files in
 a directory and its subdirectories.
 
-Let's search for `Yesterday` in the `shell-lesson-data/exercise-data/writing` directory:
+Let's search for `Yesterday` in the `stfc-carpentries-shell-novice/exercise-data/writing` directory:
 
 ```bash
 $ grep -r Yesterday .
 ```
 
 ```output
+./haiku.txt:Yesterday it worked
 ./LittleWomen.txt:"Yesterday, when Aunt was asleep and I was trying to be as still as a
 ./LittleWomen.txt:Yesterday at dinner, when an Austrian officer stared at us and then
 ./LittleWomen.txt:Yesterday was a quiet day spent in teaching, sewing, and writing in my
-./haiku.txt:Yesterday it worked
 ```
+
+The order in which files are listed is not significant;
+it may differ on your system.
 
 `grep` has lots of other options. To find out what they are, we can type:
 
@@ -216,24 +399,23 @@ $ grep --help
 ```
 
 ```output
-Usage: grep [OPTION]... PATTERN [FILE]...
-Search for PATTERN in each FILE or standard input.
-PATTERN is, by default, a basic regular expression (BRE).
+Usage: grep [OPTION]... PATTERNS [FILE]...
+Search for PATTERNS in each FILE.
 Example: grep -i 'hello world' menu.h main.c
+PATTERNS can contain multiple patterns separated by newlines.
 
-Regexp selection and interpretation:
-  -E, --extended-regexp     PATTERN is an extended regular expression (ERE)
-  -F, --fixed-strings       PATTERN is a set of newline-separated fixed strings
-  -G, --basic-regexp        PATTERN is a basic regular expression (BRE)
-  -P, --perl-regexp         PATTERN is a Perl regular expression
-  -e, --regexp=PATTERN      use PATTERN for matching
-  -f, --file=FILE           obtain PATTERN from FILE
-  -i, --ignore-case         ignore case distinctions
-  -w, --word-regexp         force PATTERN to match only whole words
-  -x, --line-regexp         force PATTERN to match only whole lines
+Pattern selection and interpretation:
+  -E, --extended-regexp     PATTERNS are extended regular expressions
+  -F, --fixed-strings       PATTERNS are strings
+  -G, --basic-regexp        PATTERNS are basic regular expressions
+  -e, --regexp=PATTERNS     use PATTERNS for matching
+  -i, --ignore-case         ignore case distinctions in patterns and data
+  -w, --word-regexp         match only whole words
   -z, --null-data           a data line ends in 0 byte, not newline
 
 Miscellaneous:
+  -v, --invert-match        select non-matching lines
+      --help                display this help text and exit
 ...        ...        ...
 ```
 
@@ -297,12 +479,13 @@ matches an actual 'o'.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::  challenge
+:::::::::::::::::::::::::::::::::::::::::  challenge
 
-## Tracking a Species
+## Finding survey records
 
-Leah has several hundred
-data files saved in one directory, each of which is formatted like this:
+Jovyan's survey data is in
+`stfc-carpentries-shell-novice/exercise-data/animal-counts/animals.csv`,
+which contains one row per date for each species seen:
 
 ```source
 2012-11-05,deer,5
@@ -315,112 +498,26 @@ data files saved in one directory, each of which is formatted like this:
 2012-11-07,bear,1
 ```
 
-She wants to write a shell script that takes a species as the first command-line argument
-and a directory as the second argument. The script should return one file called `<species>.txt`
-containing a list of dates and the number of that species seen on each date.
-For example using the data shown above, `rabbit.txt` would contain:
-
-```source
-2012-11-05,22
-2012-11-06,19
-2012-11-07,16
-```
-
-Below, each line contains an individual command, or pipe.  Arrange their
-sequence in one command in order to achieve Leah's goal:
-
-```bash
-cut -d : -f 2
->
-|
-grep -w $1 -r $2
-|
-$1.txt
-cut -d , -f 1,3
-```
-
-Hint: use `man grep` to remind ourselves how to find text in a directory
-recursively (meaning include all subdirectories in the search)
-and `man cut` to select more than one field in a line.
-
-An example of such a file is provided in
-`shell-lesson-data/exercise-data/animal-counts/animals.csv`
+1. Move into the `animal-counts` directory and use `cat` to view the whole file.
+2. Use `grep` to display every record in which the species was `deer`.
 
 :::::::::::::::  solution
 
 ## Solution
 
-```source
-grep -w $1 -r $2 | cut -d : -f 2 | cut -d , -f 1,3 > $1.txt
-```
-
-Actually, you can swap the order of the two cut commands and it still works. At the
-command line, try changing the order of the cut commands, and have a look at the output
-from each step to see why this is the case.
-
-You would call the script above like this:
-
 ```bash
-$ bash count-species.sh bear .
+$ cd ~/stfc-carpentries-shell-novice/exercise-data/animal-counts
+$ cat animals.csv
+$ grep -w "deer" animals.csv
 ```
 
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Little Women
-
-You and your friend, having just finished reading *Little Women* by
-Louisa May Alcott, are in an argument.  Of the four sisters in the
-book, Jo, Meg, Beth, and Amy, your friend thinks that Jo was the
-most mentioned.  You, however, are certain it was Amy.  Luckily, you
-have a file `LittleWomen.txt` containing the full text of the novel
-(`shell-lesson-data/exercise-data/writing/LittleWomen.txt`).
-Using a `for` loop, how would you tabulate the number of times each
-of the four sisters is mentioned?
-
-Hint: one solution might employ
-the commands `grep` and `wc` and a `|`, while another might utilize
-`grep` options.
-There is often more than one way to solve a programming task, so a
-particular solution is usually chosen based on a combination of
-yielding the correct result, elegance, readability, and speed.
-
-:::::::::::::::  solution
-
-## Solutions
-
-```source
-for sis in Jo Meg Beth Amy
-do
-    echo $sis:
-    grep -ow $sis LittleWomen.txt | wc -l
-done
+```output
+2012-11-05,deer,5
+2012-11-06,deer,2
 ```
 
-Alternative, slightly inferior solution:
-
-```source
-for sis in Jo Meg Beth Amy
-do
-    echo $sis:
-    grep -ocw $sis LittleWomen.txt
-done
-```
-
-This solution is inferior because `grep -c` only reports the number of lines matched.
-The total number of matches reported by this method will be lower if there is more
-than one match per line.
-
-Perceptive observers may have noticed that character names sometimes appear in all-uppercase
-in chapter titles (e.g. 'MEG GOES TO VANITY FAIR').
-If you wanted to count these as well, you could add the `-i` option for case-insensitivity
-(though in this case, it doesn't affect the answer to which sister is mentioned
-most frequently).
-
-
+The `-w` option restricts matches to whole words,
+so a hypothetical species called `deerhound` would not be matched.
 
 :::::::::::::::::::::::::
 
@@ -430,7 +527,7 @@ While `grep` finds lines in files,
 the `find` command finds files themselves.
 Again,
 it has a lot of options;
-to show how the simplest ones work, we'll use the `shell-lesson-data/exercise-data`
+to show how the simplest ones work, we'll use the `stfc-carpentries-shell-novice/exercise-data`
 directory tree shown below.
 
 ```output
@@ -458,7 +555,7 @@ The `exercise-data` directory contains one file, `numbers.txt` and four director
 `animal-counts`, `creatures`, `alkanes` and `writing` containing various files.
 
 For our first command,
-let's run `find .` (remember to run this command from the `shell-lesson-data/exercise-data` folder).
+let's run `find .` (remember to run this command from the `stfc-carpentries-shell-novice/exercise-data` folder).
 
 ```bash
 $ find .
@@ -583,45 +680,12 @@ while `find` searches for things with certain properties and shows them.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-As we said earlier,
-the command line's power lies in combining tools.
-We've seen how to do that with pipes;
-let's look at another technique.
-As we just saw,
-`find . -name "*.txt"` gives us a list of all text files in or below the current directory.
-How can we combine that with `wc -l` to count the lines in all those files?
-
-The simplest way is to put the `find` command inside `$()`:
-
-```bash
-$ wc -l $(find . -name "*.txt")
-```
-
-```output
-  21022 ./writing/LittleWomen.txt
-     11 ./writing/haiku.txt
-      5 ./numbers.txt
-  21038 total
-```
-
-When the shell executes this command,
-the first thing it does is run whatever is inside the `$()`.
-It then replaces the `$()` expression with that command's output.
-Since the output of `find` is the three filenames `./writing/LittleWomen.txt`,
-`./writing/haiku.txt`, and `./numbers.txt`, the shell constructs the command:
-
-```bash
-$ wc -l ./writing/LittleWomen.txt ./writing/haiku.txt ./numbers.txt
-```
-
-which is what we wanted.
-This expansion is exactly what the shell does when it expands wildcards like `*` and `?`,
-but lets us use any command we want as our own 'wildcard'.
+## Finding and searching
 
 It's very common to use `find` and `grep` together.
 The first finds files that match a pattern;
 the second looks for lines inside those files that match another pattern.
-Here, for example, we can find txt files that contain the word "searching"
+Here, for example, we can find text files that contain the word "searching"
 by looking for the string 'searching' in all the `.txt` files in the current directory:
 
 ```bash
@@ -629,43 +693,45 @@ $ grep "searching" $(find . -name "*.txt")
 ```
 
 ```output
-./writing/LittleWomen.txt:sitting on the top step, affected to be searching for her book, but was
-./writing/haiku.txt:With searching comes loss
+./haiku.txt:With searching comes loss
+./LittleWomen.txt:sitting on the top step, affected to be searching for her book, but was
 ```
 
-:::::::::::::::::::::::::::::::::::::::  challenge
+When the shell runs this command,
+it first executes `find . -name "*.txt"` and replaces the `$()` with that command's output,
+so `grep` receives the list of matching files as its arguments.
+The output of one command has become the arguments of the next.
 
-## Matching and Subtracting
+:::::::::::::::::::::::::::::::::::::::::  challenge
 
-The `-v` option to `grep` inverts pattern matching, so that only lines
-which do *not* match the pattern are printed. Given that, which of
-the following commands will find all .dat files in `creatures`
-except `unicorn.dat`?
-Once you have thought about your answer, you can test the commands in the
-`shell-lesson-data/exercise-data` directory.
+## Searching your survey data
 
-1. `find creatures -name "*.dat" | grep -v unicorn`
-2. `find creatures -name *.dat | grep -v unicorn`
-3. `grep -v "unicorn" $(find creatures -name "*.dat")`
-4. None of the above.
+You have a folder full of survey and analysis files,
+and you cannot remember which file contains the records for 7 November 2012.
+
+From `stfc-carpentries-shell-novice/exercise-data`,
+find every CSV file in or below the current directory
+and search each one for the date `2012-11-07`.
 
 :::::::::::::::  solution
 
 ## Solution
 
-Option 1 is correct. Putting the match expression in quotes prevents the shell
-expanding it, so it gets passed to the `find` command.
+```bash
+$ grep "2012-11-07" $(find . -name "*.csv")
+```
 
-Option 2 also works in this instance because the shell tries to expand `*.dat`
-but there are no `*.dat` files in the current directory,
-so the wildcard expression gets passed to `find`.
-We first encountered this in
-[episode 3](03-create.md).
+```output
+2012-11-07,rabbit,16
+2012-11-07,bear,1
+```
 
-Option 3 is incorrect because it searches the contents of the files for lines which
-do not match 'unicorn', rather than searching the file names.
-
-
+`find` produces the list of CSV files,
+and `grep` searches inside each one.
+(`grep` shows the file names only when it searches several files;
+here there is just one.)
+This is how you search a directory with many files
+without opening them one by one.
 
 :::::::::::::::::::::::::
 
@@ -707,40 +773,18 @@ And as Alfred North Whitehead wrote in 1911, 'Civilization advances by
 extending the number of important operations which we can perform
 without thinking about them.'
 
-:::::::::::::::::::::::::::::::::::::::  challenge
 
-## `find` Pipeline Reading Comprehension
-
-Write a short explanatory comment for the following shell script:
-
-```bash
-wc -l $(find . -name "*.dat") | sort -n
-```
-
-:::::::::::::::  solution
-
-## Solution
-
-1. Find all files with a `.dat` extension recursively from the current directory
-2. Count the number of lines each of these files contains
-3. Sort the output from step 2. numerically
-  
-  
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - `find` finds files with specific properties that match patterns.
+- `cat [file(s)]` prints the contents of files to the screen, joining multiple files together.
+- `head` and `tail` show the start or end of a file (10 lines by default, `-n` changes the number); `tail -f` follows a file as it grows.
 - `grep` selects lines in files that match patterns.
 - `--help` is an option supported by many bash commands, and programs that can be run from within Bash, to display more information on how to use these commands or programs.
 - `man [command]` displays the manual page for a given command.
 - `$([command])` inserts a command's output in place.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

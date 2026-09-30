@@ -6,18 +6,18 @@ title: Setup
 
 You need to download some files to follow this lesson.
 
-1. Download [shell-lesson-data.zip][zip-file] and move the file to your Desktop.
+1. Download [stfc-carpentries-shell-novice.zip][zip-file] and move the file to your Desktop.
 2. Unzip/extract the file.
   **Let your instructor know if you need help with this step**.
-  You should end up with a new folder called **`shell-lesson-data`** on your Desktop.
+  You should end up with a new folder called **`stfc-carpentries-shell-novice`** on your Desktop.
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
-## Unzip duplicated shell-lesson-data directory
+## Unzip duplicated stfc-carpentries-shell-novice directory
 
 In some cases, your extracted zip folder may be duplicated, namely on
-your Desktop the extracted folder **`shell-lesson-data`** contains
-another folder with the same name: **`shell-lesson-data`**.  On
+your Desktop the extracted folder **`stfc-carpentries-shell-novice`** contains
+another folder with the same name: **`stfc-carpentries-shell-novice`**.  On
 Windows this happens when double-clicking to unpack the zip file,
 which creates the additional folder using the zip file name.  On
 Windows this can be avoided by right-clicking on the zip file and
@@ -120,7 +120,7 @@ you can run it by opening a terminal and typing `bash`.
 
 ::::::::::::
 
-[zip-file]: data/shell-lesson-data.zip
+[zip-file]: data/stfc-carpentries-shell-novice.zip
 [install_shell]: https://carpentries.github.io/workshop-template/install_instructions/#shell
 [wsl]: https://learn.microsoft.com/en-us/windows/wsl/install
 [mac-terminal]: https://support.apple.com/en-ke/guide/terminal/welcome/mac

@@ -73,7 +73,7 @@ In the case of the shell,
 this takes the form of pipelines rather than nested function calls,
 but the core idea of "small pieces, loosely joined" is the same.
 
-All of this material can be covered in three hours
+All of this material can be covered in about three and a half hours
 as long as learners using Windows do not run into roadblocks such as:
 
 - not being able to figure out where their home directory is
@@ -84,12 +84,9 @@ as long as learners using Windows do not run into roadblocks such as:
 
 ## Preparing to Teach
 
-- Use the `data` directory for in-workshop exercises and live coding examples.
-  You can clone the shell-novice directory or use the *Download ZIP*
-  button on the right to get the entire
-  [Git repository](https://github.com/swcarpentry/shell-novice). We also now provide
-  a zip file of the `data` directory
-  at the [Setup page](../learners/setup.md).
+- Use the lesson data (`exercise-data` and `north-pacific-gyre`) for in-workshop
+  exercises and live coding examples. Learners get the same files from the
+  archive linked on the [Setup page](../learners/setup.md).
 
 - Website: various practices have been used.
   
@@ -171,11 +168,11 @@ as long as learners using Windows do not run into roadblocks such as:
   extensions are essentially there to help computers (and human
   readers) understand file content and are not a requirement of files
   (covered briefly in
-  [Navigating Files and Directories](../episodes/02-filedir.md)).
+  [Working with Files and Directories](../episodes/03-create.md)).
   This can be done in the
-  [Pipes and Filters](../episodes/04-pipefilter.md) section by showing
+  [Pipes and Filters](../episodes/06-pipefilter.md) section by showing
   that you can redirect standard output to a file without the .txt extension
-  (e.g., lengths), and that the resulting file is still a perfectly usable text file.
+  (e.g., `timestamp.txt`), and that the resulting file is still a perfectly usable text file.
   Make the point that if double-clicked in the GUI, the computer will
   probably ask you what you want to do.
 
@@ -223,8 +220,8 @@ as long as learners using Windows do not run into roadblocks such as:
   the right folder):
   
   ```bash
-  $ cd "~/OneDrive - Name Of Enterprise/Desktop"
-  $ cd "C:/Users/Username/OneDrive - Name Of Enterprise/Desktop"
+  $ cd ~/"OneDrive - Name Of Enterprise/Desktop"
+  $ cd "C:/home/Username/OneDrive - Name Of Enterprise/Desktop"
   ```
   
   One way to spot if the computer is using this kind of configuration is to look at files,

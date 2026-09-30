@@ -58,23 +58,23 @@ contact: 'team@carpentries.org'
 # - another-learner.md
 
 # Order of episodes in your lesson
-episodes: 
+episodes:
 - 01-intro.md
 - 02-filedir.md
 - 03-create.md
-- 04-pipefilter.md
-- 05-loop.md
-- 06-script.md
-- 07-find.md
+- 04-find.md
+- 05-apt.md
+- 06-pipefilter.md
+- 07-script.md
 
 # Information for Learners
-learners: 
+learners:
 
 # Information for Instructors
-instructors: 
+instructors:
 
 # Learner Profiles
-profiles: 
+profiles:
 
 # Customisation ---------------------------------------------
 #

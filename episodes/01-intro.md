@@ -60,6 +60,13 @@ of interacting, you will be able to efficiently accomplish a huge variety of tas
 
 ### Let's get started.
 
+There are many places you might access a shell. For example you might remotely connect to a server using "SSH", allowing you to use a Bash shell on that server. If you are running Linux on your own computer, you might use Bash through a Terminal program. Or on Windows, you might use the CMD or Powershell shells to run commands.
+
+In these workshops, we will be using our JupyterHub's Terminal to access a Bash shell. JupyterHub is commonly used for scientific programming, but it also has a built-in terminal. We will use this as it's ready-to-use and allows our helpers to view your shell real-time to help with any questions.
+
+To use it, open a new tab in your JupyterLab then select Terminal:
+![](fig/jupyter-terminal.png){alt="screenshot showing the steps to open a JupyterHub terminal"}
+
 When the shell is first opened, you are presented with a **prompt**,
 indicating that the shell is waiting for input.
 
@@ -80,14 +87,22 @@ The cursor is usually a flashing or solid block, but it can also be an underscor
 You may have seen it in a text editor program, for example.
 
 Note that your prompt might look a little different. In particular, most popular shell
-environments by default put your user name and the host name before the `$`. Such
-a prompt might look like, e.g.:
+environments by default put your user name, the host name, and your current file path before the `$`. For example, your prompt on JupyterHub might look like this:
 
 ```bash
-nelle@localhost $
+jovyan@user-1:~/stfc-carpentries-shell-novice $
 ```
 
-The prompt might even include more than this. Do not worry if your prompt is not
+:::::::::::::::::::::::::::::::::::::::::  callout
+## What is "jovyan"?
+
+"jovyan" is the username that JupyterHub uses (from "Jovian" for the planet "Jupiter"!).
+
+Here, "user-1" is the hostname of this server. Each workshop attendee gets their own server.
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Some prompts might even include more than this. Do not worry if your prompt is not
 just a short `$ `. This lesson does not depend on this additional information and it
 should also not get in your way. The only important item to focus on is the `$ `
 character itself and we will see later why.
@@ -100,8 +115,7 @@ $ ls
 ```
 
 ```output
-Desktop     Downloads   Movies      Pictures
-Documents   Library     Music       Public
+README.md  exercise-data  north-pacific-gyre
 ```
 
 :::::::::::::::::::::::::::::::::::::::::  callout
@@ -125,9 +139,9 @@ is not installed.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Nelle's Pipeline: A Typical Problem
+## Jovyan's Pipeline: A Typical Problem
 
-Nelle Nemo, a marine biologist,
+Jovyan Jetty, a marine biologist,
 has just returned from a six-month survey of the
 [North Pacific Gyre](https://en.wikipedia.org/wiki/North_Pacific_Gyre),
 where she has been sampling gelatinous marine life in the
@@ -138,31 +152,29 @@ She needs to run these 1520 files through an imaginary program called `goostats.
 In addition to this huge task, she has to write up results by the end of the month, so her paper
 can appear in a special issue of *Aquatic Goo Letters*.
 
-If Nelle chooses to run `goostats.sh` by hand using a GUI,
+If Jovyan chooses to run `goostats.sh` by hand using a GUI,
 she'll have to select and open a file 1520 times.
 If `goostats.sh` takes 30 seconds to run each file, the whole process will take more than 12 hours
-of Nelle's attention.
-With the shell, Nelle can instead assign her computer this mundane task while she focuses
+of Jovyan's attention.
+With the shell, Jovyan can instead assign her computer this mundane task while she focuses
 her attention on writing her paper.
 
-The next few lessons will explore the ways Nelle can achieve this.
+The next few lessons will explore the ways Jovyan can achieve this.
 More specifically,
-the lessons explain how she can use a command shell to run the `goostats.sh` program,
-using loops to automate the repetitive steps of entering file names,
+the lessons explain how she can use a command shell to run the `goostats.sh` program
+for all her files,
 so that her computer can work while she writes her paper.
 
 As a bonus,
 once she has put a processing pipeline together,
 she will be able to use it again whenever she collects more data.
 
-In order to achieve her task, Nelle needs to know how to:
+In order to achieve her task, Jovyan needs to know how to:
 
 - navigate to a file/directory
 - create a file/directory
-- check the length of a file
 - chain commands together
 - retrieve a set of files
-- iterate over files
 - run a shell script containing her pipeline
 
 
@@ -176,5 +188,3 @@ In order to achieve her task, Nelle needs to know how to:
 - A significant challenge when using the shell can be knowing what commands need to be run and how to run them.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

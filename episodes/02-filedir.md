@@ -54,27 +54,27 @@ $ pwd
 ```
 
 ```output
-/Users/nelle
+/home/jovyan/stfc-carpentries-shell-novice
 ```
 
-Here,
-the computer's response is `/Users/nelle`,
-which is Nelle's **home directory**:
+Here, the computer's response is `/home/jovyan/stfc-carpentries-shell-novice`,
+which is the data for this lesson in the user's (jovyan) **home directory**:
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
 ## Home Directory Variation
 
 The home directory path will look different on different operating systems.
-On Linux, it may look like `/home/nelle`,
-and on Windows, it will be similar to `C:\Documents and Settings\nelle` or
-`C:\Users\nelle`.
+On Linux, it may look like `/home/jovyan`,
+and on Windows, it will be similar to `C:\Documents and Settings\jovyan` or
+`C:\Users\jovyan`.
 (Note that it may look slightly different for different versions of Windows.)
-In future examples, we've used Mac output as the default - Linux and Windows
-output may differ slightly but should be generally similar.
+The output shown in the examples below comes from our JupyterHub (Ubuntu Linux);
+on other systems it may differ slightly but should be generally similar.
 
-We will also assume that your `pwd` command returns your user's home directory.
-If `pwd` returns something different, you may need to navigate there using `cd`
+We will also assume that you are working inside your lesson directory:
+`pwd` should show `/home/jovyan/stfc-carpentries-shell-novice`.
+If `pwd` returns something different, navigate there using `cd`
 or some commands in this lesson will not work as written.
 See [Exploring Other Directories](#exploring-other-directories) for more details
 on the `cd` command.
@@ -85,31 +85,31 @@ on the `cd` command.
 To understand what a 'home directory' is,
 let's have a look at how the file system as a whole is organized.  For the
 sake of this example, we'll be
-illustrating the filesystem on our scientist Nelle's computer.  After this
+illustrating the filesystem on our scientist Jovyan's computer.  After this
 illustration, you'll be learning commands to explore your own filesystem,
 which will be constructed in a similar way, but not be exactly identical.
 
-On Nelle's computer, the filesystem looks like this:
+On Jovyan's computer, the filesystem looks like this:
 
 ![](fig/filesystem.svg){alt='The file system is made up of a root directory that contains sub-directories titled bin, data, users, and tmp'}
 
-The filesystem looks like an upside down tree. 
+The filesystem looks like an upside down tree.
 The topmost directory  is the **root directory**
 that holds everything else.
 We refer to it using a slash character, `/`, on its own;
-this character is the leading slash in `/Users/nelle`.
+this character is the leading slash in `/home/jovyan`.
 
 Inside that directory are several other directories:
 `bin` (which is where some built-in programs are stored),
 `data` (for miscellaneous data files),
-`Users` (where users' personal directories are located),
+`home` (where users' personal directories are located),
 `tmp` (for temporary files that don't need to be stored long-term),
 and so on.
 
-We know that our current working directory `/Users/nelle` is stored inside `/Users`
-because `/Users` is the first part of its name.
+We know that our current working directory `/home/jovyan` is stored inside `/home`
+because `/home` is the first part of its name.
 Similarly,
-we know that `/Users` is stored inside the root directory `/`
+we know that `/home` is stored inside the root directory `/`
 because its name begins with `/`.
 
 :::::::::::::::::::::::::::::::::::::::::  callout
@@ -124,33 +124,31 @@ it's just a separator.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Underneath `/Users`,
-we find one directory for each user with an account on Nelle's machine,
+Underneath `/home`,
+we find one directory for each user with an account on Jovyan's machine,
 her colleagues *imhotep* and *larry*.
 
-![](fig/home-directories.svg){alt='Like other directories, home directories are sub-directories underneath "/Users" like "/Users/imhotep", "/Users/larry" or"/Users/nelle"'}
+![](fig/home-directories.svg){alt='Like other directories, home directories are sub-directories underneath "/home" like "/home/imhotep", "/home/larry" or"/home/jovyan"'}
 
-The user *imhotep*'s files are stored in `/Users/imhotep`,
-user *larry*'s in `/Users/larry`,
-and Nelle's in `/Users/nelle`. Nelle is the user in our
-examples here; therefore, we get `/Users/nelle` as our home directory.
+The user *imhotep*'s files are stored in `/home/imhotep`,
+user *larry*'s in `/home/larry`,
+and Jovyan's in `/home/jovyan`. Jovyan is the user in our
+examples here; therefore, we get `/home/jovyan` as our home directory.
 Typically, when you open a new command prompt, you will be in
-your home directory to start.
+your home directory to start. But in this workshop, you might automatically start in the sub-folder for this lesson.
 
 Now let's learn the command that will let us see the contents of our
-own filesystem.  We can see what's in our home directory by running `ls`:
+own filesystem.  We can see what's in our current folder by running `ls`:
 
 ```bash
 $ ls
 ```
 
 ```output
-Applications Documents    Library      Music        Public
-Desktop      Downloads    Movies       Pictures
+README.md  exercise-data  north-pacific-gyre
 ```
 
-(Again, your results may be slightly different depending on your operating
-system and how you have customized your filesystem.)
+(Again, your results may be slightly different depending on if you started in the home folder `/home/jovyan`, or the lesson folder `/home/jovyan/stfc-carpentries-shell-novice`.)
 
 `ls` prints the names of the files and directories in the current directory.
 We can make its output more comprehensible by using the `-F` **option**
@@ -163,33 +161,33 @@ by adding a marker to file and directory names to indicate what they are:
 
 Depending on your shell's default settings,
 the shell might also use colors to indicate whether each entry is a file or
-directory.
+directory. In our JupyterHub, folders are shown in blue and files in black.
 
 ```bash
 $ ls -F
 ```
 
 ```output
-Applications/ Documents/    Library/      Music/        Public/
-Desktop/      Downloads/    Movies/       Pictures/
+README.md  exercise-data/  north-pacific-gyre/
 ```
 
 Here,
-we can see that the home directory contains only **sub-directories**.
-Any names in the output that don't have a classification symbol
-are **files** in the current working directory.
+we can see that the home directory some **sub-directories** ending with a `/`.
+And one **file** `README.md` with no classifier marker at the end.
 
 :::::::::::::::::::::::::::::::::::::::::  spoiler
 
 ## Clearing your terminal
 
 If your screen gets too cluttered, you can clear your terminal using the
-`clear -x` command. You can still access previous commands using <kbd>↑</kbd>
+`clear` command. You can still access previous commands using <kbd>↑</kbd>
 and <kbd>↓</kbd> to move line-by-line, or by scrolling in your terminal.
 
-For some Bash configurations, `clear` may also clear the scrollbuffer and you 
+For some Bash configurations, `clear` may also clear the scrollbuffer and you
 will not be able to scroll back after using `clear`; using `clear -x` prevents
-this. An alternative to `clear -x` is the keyboard shortcut `Control-L`.
+this.
+
+An alternative to `clear -x` is the keyboard shortcut `Control-L`.
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -201,13 +199,13 @@ to use a command and what options it accepts ---
 **depending on your environment, you might find that only one of these ways works:**
 
 1. We can pass a `--help` option to any command (available on Linux and Git Bash), for example:
-  
+
   ```bash
   $ ls --help
   ```
 
 2. We can read its manual with `man` (available on Linux and macOS):
-  
+
   ```bash
   $ man ls
   ```
@@ -240,7 +238,7 @@ $ ls --help
 ```output
 Usage: ls [OPTION]... [FILE]...
 List information about the FILEs (the current directory by default).
-Sort entries alphabetically if neither -cftuvSUX nor --sort is specified.
+Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.
 
 Mandatory arguments to long options are mandatory for short options, too.
   -a, --all                  do not ignore entries starting with .
@@ -252,7 +250,7 @@ Mandatory arguments to long options are mandatory for short options, too.
                                1,048,576 bytes; see SIZE format below
   -B, --ignore-backups       do not list implied entries ending with ~
   -c                         with -lt: sort by, and show, ctime (time of last
-                               modification of file status information);
+                               change of file status information);
                                with -l: show ctime and sort by name;
                                otherwise: sort by ctime, newest first
   -C                         list entries by columns
@@ -260,7 +258,7 @@ Mandatory arguments to long options are mandatory for short options, too.
                                if omitted), 'auto', or 'never'; more info below
   -d, --directory            list directories themselves, not their contents
   -D, --dired                generate output designed for Emacs' dired mode
-  -f                         do not sort, enable -aU, disable -ls --color
+  -f                         list all entries in directory order
   -F, --classify             append indicator (one of */=>@|) to entries
 ...        ...        ...
 ```
@@ -274,7 +272,7 @@ When options exist as both short and long options:
    shell to minimize keystrokes and get your task done faster.
 - Use the long option in scripts to provide clarity.
   It will be read many times and typed once.
-  
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::  callout
@@ -339,7 +337,7 @@ which covers many commands introduced within this lesson.
 ## Exploring More `ls` Options
 
 You can also use two options at the same time. What does the command `ls` do when used
-with the `-l` option? What about if you use both the `-l` and the `-h` option?
+with the `-l` option? What about if you use both the `-l` and the `-h` option (which you can shorten to `-lh`)?
 
 Some of its output is about properties that we do not cover in this lesson (such
 as file permissions and ownership), but the rest should be useful
@@ -391,52 +389,29 @@ see if a new output file was written.
 
 Not only can we use `ls` on the current working directory,
 but we can use it to list the contents of a different directory.
-Let's take a look at our `Desktop` directory by running `ls -F Desktop`,
+Let's take a look at our `exercise-data` directory by running `ls -F exercise-data`,
 i.e.,
-the command `ls` with the `-F` **option** and the [**argument**][Arguments]  `Desktop`.
-The argument `Desktop` tells `ls` that
+the command `ls` with the `-F` **options** and the [**argument**][Arguments]  `exercise-data`.
+The argument `exercise-data` tells `ls` that
 we want a listing of something other than our current working directory:
 
 ```bash
-$ ls -F Desktop
+$ ls -F exercise-data
 ```
 
 ```output
-shell-lesson-data/
+alkanes/  animal-counts/  creatures/  numbers.txt  writing/
 ```
 
-Note that if a directory named `Desktop` does not exist in your current working directory,
-this command will return an error. Typically, a `Desktop` directory exists in your
-home directory, which we assume is the current working directory of your bash shell.
-
-Your output should be a list of all the files and sub-directories in your
-Desktop directory, including the `shell-lesson-data` directory you downloaded at
-the [setup for this lesson](../learners/setup.md). (On most systems, the
-contents of the `Desktop` directory in the shell will show up as icons in a graphical
-user interface behind all the open windows. See if this is the case for you.)
+Note that if a directory named `exercise-data` does not exist in your current working directory,
+this command will return an error.
 
 Organizing things hierarchically helps us keep track of our work. While it's
 possible to put hundreds of files in our home directory just as it's possible to
 pile hundreds of printed papers on our desk, it's much easier to find things when
 they've been organized into sensibly-named subdirectories.
 
-Now that we know the `shell-lesson-data` directory is located in our Desktop directory, we
-can do two things.
-
-First, using the same strategy as before, we can look at its contents by passing
-a directory name to `ls`:
-
-```bash
-$ ls -F Desktop/shell-lesson-data
-```
-
-```output
-exercise-data/  north-pacific-gyre/
-```
-
-Second, we can actually change our location to a different directory, so
-we are no longer located in
-our home directory.
+Now that we know what's inside the `exercise-data` directory, we might want to actually change our location into it.
 
 The command to change locations is `cd` followed by a
 directory name to change our working directory.
@@ -448,24 +423,27 @@ In other words it changes the shell's settings for what directory we are in.
 The `cd` command is akin to double-clicking a folder in a graphical interface
 to get into that folder.
 
-Let's say we want to move into the `exercise-data` directory we saw above. We can
-use the following series of commands to get there:
+Let's say we want to move into the `exercise-data` directory we saw above. We can use the following command to get there:
 
 ```bash
-$ cd Desktop
-$ cd shell-lesson-data
 $ cd exercise-data
 ```
 
-These commands will move us from our home directory into our Desktop directory, then into
-the `shell-lesson-data` directory, then into the `exercise-data` directory.
+Or, from our home directory `/home/jovyan`, we might have to do multiple steps:
+```bash
+$ cd stfc-carpentries-shell-novice
+$ cd exercise-data
+```
+
+These commands will move us from our home directory into the `stfc-carpentries-shell-novice` directory, then into the `exercise-data` directory.
+
 You will notice that `cd` doesn't print anything. This is normal.
 Many shell commands will not output anything to the screen when successfully executed.
 But if we run `pwd` after it, we can see that we are now
-in `/Users/nelle/Desktop/shell-lesson-data/exercise-data`.
+in `/home/jovyan/stfc-carpentries-shell-novice/exercise-data`.
 
 If we run `ls -F` without arguments now,
-it lists the contents of `/Users/nelle/Desktop/shell-lesson-data/exercise-data`,
+it lists the contents of `/home/jovyan/stfc-carpentries-shell-novice/exercise-data`,
 because that's where we now are:
 
 ```bash
@@ -473,7 +451,7 @@ $ pwd
 ```
 
 ```output
-/Users/nelle/Desktop/shell-lesson-data/exercise-data
+/home/jovyan/stfc-carpentries-shell-novice/exercise-data
 ```
 
 ```bash
@@ -489,11 +467,11 @@ but how do we go up (i.e. how do we leave a directory and go into its parent dir
 We might try the following:
 
 ```bash
-$ cd shell-lesson-data
+$ cd stfc-carpentries-shell-novice
 ```
 
 ```error
--bash: cd: shell-lesson-data: No such file or directory
+-bash: cd: stfc-carpentries-shell-novice: No such file or directory
 ```
 
 But we get an error! Why is this?
@@ -514,14 +492,14 @@ $ cd ..
 or more succinctly,
 the **parent** of the current directory.
 Sure enough,
-if we run `pwd` after running `cd ..`, we're back in `/Users/nelle/Desktop/shell-lesson-data`:
+if we run `pwd` after running `cd ..`, we're back in `/home/jovyan/stfc-carpentries-shell-novice`:
 
 ```bash
 $ pwd
 ```
 
 ```output
-/Users/nelle/Desktop/shell-lesson-data
+/home/jovyan/stfc-carpentries-shell-novice
 ```
 
 The special directory `..` doesn't usually show up when we run `ls`. If we want
@@ -537,7 +515,7 @@ $ ls -F -a
 
 `-a` stands for 'show all' (including hidden files);
 it forces `ls` to show us file and directory names that begin with `.`,
-such as `..` (which, if we're in `/Users/nelle`, refers to the `/Users` directory).
+such as `..` (which, if we're in `/home/jovyan`, refers to the `/home` directory).
 As you can see,
 it also displays another special directory that's just called `.`,
 which means 'the current working directory'.
@@ -579,7 +557,7 @@ $ pwd
 ```
 
 ```output
-/Users/nelle
+/home/jovyan
 ```
 
 It turns out that `cd` without an argument will return you to your home directory,
@@ -590,7 +568,7 @@ three commands, but we can actually string together the list of directories
 to move to `exercise-data` in one step:
 
 ```bash
-$ cd Desktop/shell-lesson-data/exercise-data
+$ cd stfc-carpentries-shell-novice/exercise-data
 ```
 
 Check that we've moved to the right place by running `pwd` and `ls -F`.
@@ -610,21 +588,21 @@ leading slash. The leading `/` tells the computer to follow the path from
 the root of the file system, so it always refers to exactly one directory,
 no matter where we are when we run the command.
 
-This allows us to move to our `shell-lesson-data` directory from anywhere on
+This allows us to move to our `stfc-carpentries-shell-novice` directory from anywhere on
 the filesystem (including from inside `exercise-data`). To find the absolute path
 we're looking for, we can use `pwd` and then extract the piece we need
-to move to `shell-lesson-data`.
+to move to `stfc-carpentries-shell-novice`.
 
 ```bash
 $ pwd
 ```
 
 ```output
-/Users/nelle/Desktop/shell-lesson-data/exercise-data
+/home/jovyan/stfc-carpentries-shell-novice/exercise-data
 ```
 
 ```bash
-$ cd /Users/nelle/Desktop/shell-lesson-data
+$ cd /home/jovyan/stfc-carpentries-shell-novice
 ```
 
 Run `pwd` and `ls -F` to ensure that we're in the directory we expect.
@@ -634,10 +612,10 @@ Run `pwd` and `ls -F` to ensure that we're in the directory we expect.
 ## Two More Shortcuts
 
 The shell interprets a tilde (`~`) character at the start of a path to
-mean "the current user's home directory". For example, if Nelle's home
-directory is `/Users/nelle`, then `~/data` is equivalent to
-`/Users/nelle/data`. This only works if it is the first character in the
-path; `here/there/~/elsewhere` is *not* `here/there/Users/nelle/elsewhere`.
+mean "the current user's home directory". For example, if Jovyan's home
+directory is `/home/jovyan`, then `~/data` is equivalent to
+`/home/jovyan/data`. This only works if it is the first character in the
+path; `here/there/~/elsewhere` is *not* `here/there/home/jovyan/elsewhere`.
 
 Another shortcut is the `-` (dash) character. `cd` will translate `-` into
 *the previous directory I was in*, which is faster than having to remember,
@@ -651,10 +629,10 @@ that the former brings you *up*, while the latter brings you *back*.
 ***
 
 Try it!
-First navigate to `~/Desktop/shell-lesson-data` (you should already be there).
+First navigate to `~/stfc-carpentries-shell-novice` (you should already be there).
 
 ```bash
-$ cd ~/Desktop/shell-lesson-data
+$ cd ~/stfc-carpentries-shell-novice
 ```
 
 Then `cd` into the `exercise-data/creatures` directory
@@ -669,8 +647,8 @@ Now if you run
 $ cd -
 ```
 
-you'll see you're back in `~/Desktop/shell-lesson-data`.
-Run `cd -` again and you're back in `~/Desktop/shell-lesson-data/exercise-data/creatures`
+you'll see you're back in `~/stfc-carpentries-shell-novice`.
+Run `cd -` again and you're back in `~/stfc-carpentries-shell-novice/exercise-data/creatures`
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -679,17 +657,17 @@ Run `cd -` again and you're back in `~/Desktop/shell-lesson-data/exercise-data/c
 
 ## Absolute vs Relative Paths
 
-Starting from `/Users/nelle/data`,
-which of the following commands could Nelle use to navigate to her home directory,
-which is `/Users/nelle`?
+Starting from `/home/jovyan/stfc-carpentries-shell-novice`,
+which of the following commands could Jovyan use to navigate to her home directory,
+which is `/home/jovyan`?
 
 1. `cd .`
 2. `cd /`
-3. `cd /home/nelle`
+3. `cd /home/jovyan`
 4. `cd ../..`
 5. `cd ~`
 6. `cd home`
-7. `cd ~/data/..`
+7. `cd ~/stfc-carpentries-shell-novice/..`
 8. `cd`
 9. `cd ..`
 
@@ -699,16 +677,16 @@ which is `/Users/nelle`?
 
 1. No: `.` stands for the current directory.
 2. No: `/` stands for the root directory.
-3. No: Nelle's home directory is `/Users/nelle`.
-4. No: this command goes up two levels, i.e. ends in `/Users`.
-5. Yes: `~` stands for the user's home directory, in this case `/Users/nelle`.
+3. Yes: The absolute path Jovyan's home directory is `/home/jovyan`, but this is a lot to type.
+4. No: this command goes up two levels, i.e. ends in `/home`.
+5. Yes: `~` stands for the user's home directory, in this case `/home/jovyan`.
 6. No: this command would navigate into a directory `home` in the current directory
   if it exists.
 7. Yes: unnecessarily complicated, but correct.
 8. Yes: shortcut to go back to the user's home directory.
 9. Yes: goes up one level.
-  
-  
+
+
 
 :::::::::::::::::::::::::
 
@@ -718,7 +696,7 @@ which is `/Users/nelle`?
 
 ## Relative Path Resolution
 
-Using the filesystem diagram below, if `pwd` displays `/Users/thing`,
+Using the filesystem diagram below, if `pwd` displays `/home/thing`,
 what will `ls -F ../backup` display?
 
 1. `../backup: No such file or directory`
@@ -726,19 +704,19 @@ what will `ls -F ../backup` display?
 3. `2012-12-01/ 2013-01-08/ 2013-01-27/`
 4. `original/ pnas_final/ pnas_sub/`
 
-![](fig/filesystem-challenge.svg){alt='A directory tree below the Users directory where "/Users" contains the directories "backup" and "thing"; "/Users/backup" contains "original","pnas\_final" and "pnas\_sub"; "/Users/thing" contains "backup"; and"/Users/thing/backup" contains "2012-12-01", "2013-01-08" and"2013-01-27"'}
+![](fig/filesystem-challenge.svg){alt='A directory tree below the Users directory where "/home" contains the directories "backup" and "thing"; "/home/backup" contains "original","pnas\_final" and "pnas\_sub"; "/home/thing" contains "backup"; and"/home/thing/backup" contains "2012-12-01", "2013-01-08" and"2013-01-27"'}
 
 :::::::::::::::  solution
 
 ## Solution
 
-1. No: there *is* a directory `backup` in `/Users`.
+1. No: there *is* a directory `backup` in `/home`.
 2. No: this is the content of `Users/thing/backup`,
   but with `..`, we asked for one level further up.
 3. No: see previous explanation.
-4. Yes: `../backup/` refers to `/Users/backup/`.
-  
-  
+4. Yes: `../backup/` refers to `/home/backup/`.
+
+
 
 :::::::::::::::::::::::::
 
@@ -757,7 +735,7 @@ what command(s) will result in the following output:
 pnas_sub/ pnas_final/ original/
 ```
 
-![](fig/filesystem-challenge.svg){alt='A directory tree below the Users directory where "/Users" contains the directories "backup" and "thing"; "/Users/backup" contains "original","pnas\_final" and "pnas\_sub"; "/Users/thing" contains "backup"; and"/Users/thing/backup" contains "2012-12-01", "2013-01-08" and"2013-01-27"'}
+![](fig/filesystem-challenge.svg){alt='A directory tree below the Users directory where "/home" contains the directories "backup" and "thing"; "/home/backup" contains "original","pnas\_final" and "pnas\_sub"; "/home/thing" contains "backup"; and"/home/thing/backup" contains "2012-12-01", "2013-01-08" and"2013-01-27"'}
 
 1. `ls pwd`
 2. `ls -r -F`
@@ -771,8 +749,8 @@ pnas_sub/ pnas_final/ original/
 2. Yes: `ls` without directory argument lists files and directories
   in the current directory.
 3. Yes: uses the absolute path explicitly.
-  
-  
+
+
 
 :::::::::::::::::::::::::
 
@@ -814,13 +792,17 @@ For example, `ls -s` will display the size of files and directories alongside th
 while `ls -S` will sort the files and directories by size, as shown below:
 
 ```bash
-$ cd ~/Desktop/shell-lesson-data
+$ cd ~/stfc-carpentries-shell-novice
 $ ls -s exercise-data
 ```
 
 ```output
-total 28
- 4 animal-counts   4 creatures  12 numbers.txt   4 alkanes   4 writing
+total 20
+4 alkanes
+4 animal-counts
+4 creatures
+4 numbers.txt
+4 writing
 ```
 
 Note that the sizes returned by `ls -s` are in *blocks*.
@@ -832,7 +814,11 @@ $ ls -S exercise-data
 ```
 
 ```output
-animal-counts  creatures  alkanes  writing  numbers.txt
+alkanes
+animal-counts
+creatures
+writing
+numbers.txt
 ```
 
 Putting all that together, our command `ls -F /` above gives us a listing
@@ -844,15 +830,14 @@ $ ls -F /
 ```
 
 ```output
-Applications/         System/
-Library/              Users/
-Network/              Volumes/
+bin@  boot/  dev/  etc/  home/  lib@  lib32@  lib64@  media/  mnt/
+opt/  proc/  root/  run@  sbin@  srv/  sys/  tmp/  usr/  var@
 ```
 
-### Nelle's Pipeline: Organizing Files
+### Jovyan's Pipeline: Organizing Files
 
 Knowing this much about files and directories,
-Nelle is ready to organize the files that the protein assay machine will create.
+Jovyan is ready to organize the files that the protein assay machine will create.
 
 She creates a directory called `north-pacific-gyre`
 (to remind herself where the data came from),
@@ -869,8 +854,8 @@ Since the output of the assay machine is plain text,
 she will call her files `NENE01729A.txt`, `NENE01812A.txt`, and so on.
 All 1520 files will go into the same directory.
 
-Now in her current directory `shell-lesson-data`,
-Nelle can see what files she has using the command:
+Now in her current directory `stfc-carpentries-shell-novice`,
+Jovyan can see what files she has using the command:
 
 ```bash
 $ ls north-pacific-gyre/
@@ -895,7 +880,7 @@ Pressing <kbd>Tab</kbd> again does nothing,
 since there are multiple possibilities;
 pressing <kbd>Tab</kbd> twice brings up a list of all the files.
 
-If Nelle then presses <kbd>G</kbd> and then presses <kbd>Tab</kbd> again,
+If Jovyan then presses <kbd>G</kbd> and then presses <kbd>Tab</kbd> again,
 the shell will append 'goo' since all files that start with 'g' share
 the first three characters 'goo'.
 
@@ -934,5 +919,3 @@ and we will see it in many other tools as we go on.
 - `.` on its own means 'the current directory'; `..` means 'the directory above the current one'.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

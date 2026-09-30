@@ -30,7 +30,7 @@ using the `exercise-data/writing` directory as an example.
 
 ### Step one: see where we are and what we already have
 
-We should still be in the `shell-lesson-data` directory on the Desktop,
+We should still be in the `stfc-carpentries-shell-novice` directory in our home folder,
 which we can check using:
 
 ```bash
@@ -38,7 +38,7 @@ $ pwd
 ```
 
 ```output
-/Users/nelle/Desktop/shell-lesson-data
+/home/jovyan/stfc-carpentries-shell-novice
 ```
 
 Next we'll move to the `exercise-data/writing` directory and see what it contains:
@@ -311,7 +311,7 @@ $ rm my_file.txt
 
 ## What's In A Name?
 
-You may have noticed that all of Nelle's files are named 'something dot
+You may have noticed that all of Jovyan's files are named 'something dot
 something', and in this part of the lesson, we always used the extension
 `.txt`.  This is just a convention; we can call a file `mythesis` or
 almost anything else we want. However, most people use two-part names
@@ -338,10 +338,10 @@ attempt to open the `whale.mp3` file.
 
 ## Moving files and directories
 
-Returning to the `shell-lesson-data/exercise-data/writing` directory,
+Returning to the `stfc-carpentries-shell-novice/exercise-data/writing` directory,
 
 ```bash
-$ cd ~/Desktop/shell-lesson-data/exercise-data/writing
+$ cd ~/stfc-carpentries-shell-novice/exercise-data/writing
 ```
 
 In our `thesis` directory we have a file `draft.txt`
@@ -398,7 +398,6 @@ $ ls thesis
 ```
 
 ```output
-$
 ```
 
 Alternatively, we can confirm the file `quotes.txt` is no longer present in the `thesis` directory
@@ -537,7 +536,7 @@ accomplishes the same thing as
 $ cp quotes.txt thesis/quotes.txt
 ```
 
-:::::::::::::::::::::::::::::::::::::::  
+:::::::::::::::::::::::::::::::::::::::
 
 
 :::::::::::::::::::::::::::::::::::::::  challenge
@@ -584,7 +583,7 @@ $ pwd
 ```
 
 ```output
-/Users/jamie/data
+/home/jamie/data
 ```
 
 ```bash
@@ -611,19 +610,19 @@ $ ls
 
 ## Solution
 
-We start in the `/Users/jamie/data` directory, and create a new folder called `recombined`.
+We start in the `/home/jamie/data` directory, and create a new folder called `recombined`.
 The second line moves (`mv`) the file `proteins.dat` to the new folder (`recombined`).
 The third line makes a copy of the file we just moved.
 The tricky part here is where the file was copied to.
-Recall that `..` means 'go up a level', so the copied file is now in `/Users/jamie`.
+Recall that `..` means 'go up a level', so the copied file is now in `/home/jamie`.
 Notice that `..` is interpreted with respect to the current working
 directory, **not** with respect to the location of the file being copied.
-So, the only thing that will show using ls (in `/Users/jamie/data`) is the recombined folder.
+So, the only thing that will show using ls (in `/home/jamie/data`) is the recombined folder.
 
-1. No, see explanation above.  `proteins-saved.dat` is located at `/Users/jamie`
+1. No, see explanation above.  `proteins-saved.dat` is located at `/home/jamie`
 2. Yes
-3. No, see explanation above.  `proteins.dat` is located at `/Users/jamie/data/recombined`
-4. No, see explanation above.  `proteins-saved.dat` is located at `/Users/jamie`
+3. No, see explanation above.  `proteins.dat` is located at `/home/jamie/data/recombined`
+4. No, see explanation above.  `proteins-saved.dat` is located at `/home/jamie`
 
 :::::::::::::::::::::::::
 
@@ -631,7 +630,7 @@ So, the only thing that will show using ls (in `/Users/jamie/data`) is the recom
 
 ## Removing files and directories
 
-Returning to the `shell-lesson-data/exercise-data/writing` directory,
+Returning to the `stfc-carpentries-shell-novice/exercise-data/writing` directory,
 let's tidy up this directory by removing the `quotes.txt` file we created.
 The Unix command we'll use for this is `rm` (short for 'remove'):
 
@@ -724,7 +723,7 @@ or sets of characters when navigating the Unix file system.
 
 ## Copy with Multiple Filenames
 
-For this exercise, you can test the commands in the `shell-lesson-data/exercise-data` directory.
+For this exercise, you can test the commands in the `stfc-carpentries-shell-novice/exercise-data` directory.
 
 We have seen how `cp` behaves when given two arguments. The second argument can
 be a filename (what to name the copy) or an existing directory (where to put the copy).
@@ -765,7 +764,7 @@ is a file name, you get an error:
 
 
 ```error
-cp: target 'basilisk.dat' is not a directory
+cp: target 'basilisk.dat': Not a directory
 ```
 
 :::::::::::::::::::::::::
@@ -779,7 +778,7 @@ cp: target 'basilisk.dat' is not a directory
 ## Wildcards
 
 `*` is a **wildcard**, which represents zero or more other characters.
-Let's consider the `shell-lesson-data/exercise-data/alkanes` directory:
+Let's consider the `stfc-carpentries-shell-novice/exercise-data/alkanes` directory:
 `*.pdb` represents `ethane.pdb`, `propane.pdb`, and every
 file that ends with '.pdb'. On the other hand, `p*.pdb` only represents
 `pentane.pdb` and `propane.pdb`, because the 'p' at the front can only

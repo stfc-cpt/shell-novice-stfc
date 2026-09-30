@@ -1,5 +1,5 @@
 #!/bin/bash
-# Incomplete goo comparator by Nelle Nemo.
+# Incomplete goo comparator by Jovyan Jetty.
 
 # check for the right number of input arguments
 if [ $# -ne 2 ]

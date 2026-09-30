@@ -1,5 +1,5 @@
 #!/bin/bash
-# goostats.sh: a research script by Nelle Nemo
+# goostats.sh: a research script by Jovyan Jetty
 # Analyze "goo" input data and write "stats" to result file.
 
 # check for the right number of input arguments
