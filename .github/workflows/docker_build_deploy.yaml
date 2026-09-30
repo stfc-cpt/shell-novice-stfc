@@ -59,6 +59,14 @@ jobs:
         id: build-check
         uses: carpentries/actions/build-preflight@main
 
+      - name: "Generate app token"
+        if: steps.build-check.outputs.do-build == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: "Checkout Lesson"
         if: steps.build-check.outputs.do-build == 'true'
         uses: actions/checkout@v6
@@ -70,7 +78,7 @@ jobs:
         with:
           WORKBENCH_TAG: ${{ vars.WORKBENCH_TAG }}
           renv-needed: ${{ steps.build-check.outputs.renv-needed }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
   full-build:
     name: "Build Full Site"
