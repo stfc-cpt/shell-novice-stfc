@@ -57,7 +57,7 @@ What if we wanted to find all packages related to Python?
 
 We can combine the commands above using a *pipe*, `|`!
 
-Type it by holding <kbd>Shift</kbd> and pressing the <kbd>\</kbd> key.
+Type it with<kbd>Shift</kbd> + <kbd>\\</kbd> (backslash).
 
 Let's look at an example:
 
@@ -82,17 +82,40 @@ as the input of the command on the right.
 
 I.e. we want to take the output of `apt list --installed`, and use it as the input of `grep python`.
 
-We can even chain multiple pipes together, for example say we wanted to find only the "minimal" python packages:
+`grep` hence accepts inputs both from a piped output, or from a specific file path as we saw previously. Commands like this are called _filters_.
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+At the top of the output, there is a warning:
+`WARNING: apt does not have a stable CLI interface. Use with caution in scripts.`
+
+This is just `apt` letting you know to not rely on its piped output when writing shell scripts (which we will look at in the next section.)
+
+But this does show us something interesting: we searched for lines containing `python`, yet this line doesn't contain that word and still appeared. Why wasn't it filtered out?
+
+Every command has three standard streams, which are channels that text flows through:
+
+- **stdin** (standard input): where a command reads its input from. By default this is your keyboard. When you use a pipe, it is the output of the previous command. __This is why `grep python` works without a filename__: with no file given, `grep` reads from stdin.
+- **stdout** (standard output): where a command writes its normal results. By default this is your terminal. This is the stream a pipe connects to the next command's stdin, and the stream `>` and `>>` write to files (we will come across these operators soon).
+- **stderr** (standard error): where a command writes errors and warnings. By default this is also your terminal, so it looks the same as stdout, but it is a separate stream, and **a pipe does not carry it**.
+
+So the warning, sent via `stderr`, went straight to the screen bypassing `grep`, while the package list went through the pipe and was filtered.
+
+We'll see later how these streams can be handled seperately.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+We can even chain multiple pipes together, for example say we wanted to count how many "python" related packages we have:
 
 ```bash
-$ apt list --installed | grep python | grep minimal
+$ apt list --installed | grep python | wc -l
 ```
 
 ```output
-libpython3.12-minimal/noble-updates,noble-security,now 3.12.3-1ubuntu0.17 amd64 [installed,automatic]
-python3-minimal/noble-updates,noble-security,now 3.12.3-0ubuntu2.1 amd64 [installed,automatic]
-python3.12-minimal/noble-updates,noble-security,now 3.12.3-1ubuntu0.17 amd64 [installed,automatic]
+7
 ```
+
+`wc` is the word-count command. The `-l` flag counts the number of lines.
 
 ## Other Useful Operators
 
@@ -210,6 +233,78 @@ Be very careful with `>`. It will replace the contents of whatever file it point
 
 It's usually best to default to using `>>`.
 If the file doesn't exist, it will create it for you anyway
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Advanced: Redirecting `stdout` and `stderr` separately
+
+Earlier, we saw that `apt` printed a warning that wasn't filtered by `grep`. That is because the warning was written to `stderr`, which a pipe doesn't carry.
+
+Each stream has a number, and we can put that number in front of `>` to say which stream we want to redirect:
+
+| Number | Stream   | Meaning                      | Redirector |
+| ------ | -------- | ---------------------------- | ---------- |
+| `0`    | `stdin`  | input to the command         | `0>`       |
+| `1`    | `stdout` | normal output                | `1>` or `>`|
+| `2`    | `stderr` | errors and warnings          | `2>`       |
+
+So `>` on its own is shorthand for `1>`: it redirects `stdout`, which is why errors have still been appearing on our screen whenever we used it.
+
+We can see the two streams separate by discarding `stderr` with `2>`.
+The special file `/dev/null` throws away anything written to it:
+
+```bash
+$ apt list --installed 2>/dev/null | grep python
+```
+
+```output
+libpython3-stdlib/now 3.12.3-0ubuntu2.1 amd64 [installed,local]
+libpython3.12-minimal/now 3.12.3-1ubuntu0.17 amd64 [installed,local]
+...
+```
+
+The warning is now gone, because we sent `stderr` to `/dev/null`.
+
+Or, we can discard `stdout` with `1>` (or just `>`):
+
+```bash
+$ apt list --installed 1>/dev/null | grep python
+```
+
+```output
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+```
+
+This time the package list was thrown away, so `grep` received nothing to filter and printed nothing.
+Only the warning is left, because `stderr` bypassed the pipe and went straight to the screen.
+
+### Saving errors to a file
+
+Like `>`, these operators can write to a real file instead of `/dev/null`.
+This lets us keep normal output and errors apart:
+
+```bash
+$ apt list --installed 1>packages.txt 2>errors.txt
+$ cat errors.txt
+```
+
+```output
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+```
+
+### Combining both streams
+
+Sometimes we want errors to travel down the pipe with everything else.
+`2>&1` means "send `stderr` to wherever `stdout` is currently going":
+
+```bash
+$ apt list --installed 2>&1 | grep python
+```
+
+Now the warning is treated like any other line, so `grep` filters it out too (it doesn't contain `python`).
+Put `2>&1` before the pipe, not after it.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 

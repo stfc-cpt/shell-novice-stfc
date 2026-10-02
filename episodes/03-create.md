@@ -299,7 +299,7 @@ $ touch my_file.txt
 To avoid confusion later on,
 we suggest removing the file you've just created before proceeding with the rest
 of the episode, otherwise future outputs may vary from those given in the lesson.
-To do this, use the following command:
+To do this, use the following command `rm` which we will look more at later:
 
 ```bash
 $ rm my_file.txt
@@ -438,6 +438,8 @@ $ ls -F analyzed
 fructose.dat glucose.dat maltose.dat sucrose.dat
 $ cd analyzed
 ```
+
+Multiple files can be moved at once, so long as the last argument is the destination directory.
 
 Fill in the blanks to move these files to the `raw/` folder
 (i.e. the one she forgot to put them in)
@@ -799,7 +801,7 @@ any file, Bash will pass the expression as an argument to the command
 as it is. For example, typing `ls *.pdf` in the `alkanes` directory
 (which contains only files with names ending with `.pdb`) results in
 an error message that there is no file called `*.pdf`.
-However, generally commands like `wc` and `ls` see the lists of
+However, generally commands like `ls` see the lists of
 file names matching these expressions, but not the wildcards
 themselves. It is the shell, not the other programs, that expands
 the wildcards.

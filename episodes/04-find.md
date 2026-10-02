@@ -196,21 +196,23 @@ To see this, open a second terminal
 In tab 2, run this loop and leave it alone:
 
 ```bash
-$ while true; do fortune >> fortunes.txt; sleep 2; done
+$ cd ~/stfc-carpentries-shell-novice/exercise-data/writing
+$ timeout 10m bash -c 'while true; do fortune >> fortunes.txt; sleep 2; done'
 ```
 
 You do not need to understand this loop yet.
 Treat it as a small machine that reads a fortune and appends it to the file
-`fortunes.txt`, one every two seconds, forever.
+`fortunes.txt`, one every two seconds, for up to 10 minutes.
 It prints nothing, and the prompt does not come back while it runs,
 because the command has not finished.
-Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it, and the prompt returns.
+
+You could press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it, and the prompt returns.
 This is worth remembering in general:
 <kbd>Ctrl</kbd>+<kbd>C</kbd> stops whatever command is running in the
 foreground. (The `>>` writes into the file; we meet it properly in the next
 few episodes.)
 
-Now switch to tab 1 and follow the file:
+Instead of stopping it, switch to tab 1 and follow the file:
 
 ```bash
 $ tail -f fortunes.txt
@@ -240,7 +242,9 @@ leave `tail -f` open while the job writes to the file.
 Later in the lesson we will also meet `less`,
 for browsing a long file one screen at a time.
 
-Let's find lines that contain the word 'not':
+## Finding lines in files
+
+Going back to our haikus, let's find lines that contain the word 'not' using Grep:
 
 ```bash
 $ grep not haiku.txt
@@ -523,6 +527,7 @@ so a hypothetical species called `deerhound` would not be matched.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
+## Searching for files
 While `grep` finds lines in files,
 the `find` command finds files themselves.
 Again,
