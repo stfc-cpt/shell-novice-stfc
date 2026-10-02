@@ -234,20 +234,6 @@ $ cowsay "Hello from the shell!"
                 ||     ||
 ```
 
-## Installing an editor
-
-Earlier we edited files with `nano`, which came with the system.
-Let's install `micro`, a small terminal text editor with mouse support
-that we will use for the rest of the workshop:
-
-```bash
-$ sudo apt install micro
-```
-
-You can now edit files by running `micro filename`.
-If you get stuck, <kbd>Ctrl</kbd>+<kbd>Q</kbd> quits (it will ask about
-unsaved changes first).
-
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ## Install Something Yourself
