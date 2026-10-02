@@ -345,7 +345,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Shell Scripts</h1>
-        <p>Last updated on 2026-09-30 |
+        <p>Last updated on 2026-10-02 |
 
         <a href="https://github.com/swcarpentry/shell-novice/edit/main/episodes/07-script.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -403,17 +403,17 @@ reproduce the same results simply by running your script, rather than
 having to remember or retype a long list of commands.</p>
 <section><h2 class="section-heading" id="a-first-script">A first script<a class="anchor" aria-label="anchor" href="#a-first-script"></a></h2>
 <hr class="half-width"><p>Let’s start by making sure we are in our lesson directory and
-creating a new file, <code>hello.sh</code>, using the <code>micro</code>
-editor we installed earlier:</p>
+creating a new file, <code>hello.sh</code>, using the <code>nano</code>
+editor we used earlier:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a><span class="ex">$</span> cd ~/stfc-carpentries-shell-novice</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1" aria-label="code-block-1-2"></a><span class="ex">$</span> micro hello.sh</span></code></pre>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1" aria-label="code-block-1-2"></a><span class="ex">$</span> nano hello.sh</span></code></pre>
 </div>
-<p>The file does not exist yet, so <code>micro</code> creates it. Type
-in the following two lines, then save with <kbd>Ctrl</kbd>+<kbd>S</kbd>
-and quit with <kbd>Ctrl</kbd>+<kbd>Q</kbd>:</p>
+<p>The file does not exist yet, so <code>nano</code> creates it. Type in
+the following two lines, then save with <kbd>Ctrl</kbd>+<kbd>O</kbd> and
+quit with <kbd>Ctrl</kbd>+<kbd>X</kbd>:</p>
 <pre class="source"><code>echo "Hello from a shell script!"
 echo "The time is $(date)"</code></pre>
 <p>A script can contain any of the commands we have met so far —
@@ -452,8 +452,8 @@ store not only text, but also formatting information about fonts,
 headings, and so on. This extra information isn’t stored as characters
 and doesn’t mean anything to tools like the shell, which expects files
 to contain nothing but plain text. When writing scripts, use a plain
-text editor such as <code>micro</code>, and be careful to save files as
-plain text.</p>
+text editor such as <code>nano</code>, <code>micro</code> or
+<code>vi</code>, and be careful to save files as plain text.</p>
 </div>
 </div>
 </div>
@@ -862,7 +862,7 @@ running it.</li>
   "url": "https://swcarpentry.github.io/shell-novice/instructor/07-script.html",
   "identifier": "https://swcarpentry.github.io/shell-novice/instructor/07-script.html",
   "dateCreated": "2014-10-22",
-  "dateModified": "2026-09-30",
+  "dateModified": "2026-10-02",
   "datePublished": "2026-10-02"
 }
 

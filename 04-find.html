@@ -239,6 +239,8 @@
         <ul><li><a href="#viewing-files-with-cat">Viewing files with <code>cat</code></a></li>
 <li><a href="#looking-at-the-start-and-end-head-and-tail">Looking at the start and end: <code>head</code> and
 <code>tail</code></a></li>
+<li><a href="#finding-lines-in-files">Finding lines in files</a></li>
+<li><a href="#searching-for-files">Searching for files</a></li>
 <li><a href="#finding-and-searching">Finding and searching</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -345,7 +347,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Finding Things</h1>
-        <p>Last updated on 2026-09-30 |
+        <p>Last updated on 2026-10-02 |
 
         <a href="https://github.com/swcarpentry/shell-novice/edit/main/episodes/04-find.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -563,18 +565,20 @@ again).</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="ex">$</span> while true<span class="kw">;</span> <span class="cf">do</span> <span class="ex">fortune</span> <span class="op">&gt;&gt;</span> fortunes.txt<span class="kw">;</span> <span class="fu">sleep</span> 2<span class="kw">;</span> <span class="cf">done</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="ex">$</span> cd ~/stfc-carpentries-shell-novice/exercise-data/writing</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1" aria-label="code-block-13-2"></a><span class="ex">$</span> timeout 10m bash <span class="at">-c</span> <span class="st">'while true; do fortune &gt;&gt; fortunes.txt; sleep 2; done'</span></span></code></pre>
 </div>
 <p>You do not need to understand this loop yet. Treat it as a small
 machine that reads a fortune and appends it to the file
-<code>fortunes.txt</code>, one every two seconds, forever. It prints
-nothing, and the prompt does not come back while it runs, because the
-command has not finished. Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it,
-and the prompt returns. This is worth remembering in general:
+<code>fortunes.txt</code>, one every two seconds, for up to 10 minutes.
+It prints nothing, and the prompt does not come back while it runs,
+because the command has not finished.</p>
+<p>You could press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it, and the
+prompt returns. This is worth remembering in general:
 <kbd>Ctrl</kbd>+<kbd>C</kbd> stops whatever command is running in the
 foreground. (The <code>&gt;&gt;</code> writes into the file; we meet it
 properly in the next few episodes.)</p>
-<p>Now switch to tab 1 and follow the file:</p>
+<p>Instead of stopping it, switch to tab 1 and follow the file:</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -601,7 +605,10 @@ to stop the fortune loop. Both prompts come back.</p>
 <code>tail -f</code> open while the job writes to the file.</p>
 <p>Later in the lesson we will also meet <code>less</code>, for browsing
 a long file one screen at a time.</p>
-<p>Let’s find lines that contain the word ‘not’:</p>
+</div>
+</section><section><h2 class="section-heading" id="finding-lines-in-files">Finding lines in files<a class="anchor" aria-label="anchor" href="#finding-lines-in-files"></a></h2>
+<hr class="half-width"><p>Going back to our haikus, let’s find lines that contain the word
+‘not’ using Grep:</p>
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -917,7 +924,8 @@ matched.</p>
 </div>
 </div>
 </div>
-<p>While <code>grep</code> finds lines in files, the <code>find</code>
+</section><section><h2 class="section-heading" id="searching-for-files">Searching for files<a class="anchor" aria-label="anchor" href="#searching-for-files"></a></h2>
+<hr class="half-width"><p>While <code>grep</code> finds lines in files, the <code>find</code>
 command finds files themselves. Again, it has a lot of options; to show
 how the simplest ones work, we’ll use the
 <code>stfc-carpentries-shell-novice/exercise-data</code> directory tree
@@ -1078,7 +1086,6 @@ pattern <code>*.txt</code>, not the expanded filename
 things given the right options, but under normal circumstances,
 <code>ls</code> lists everything it can, while <code>find</code>
 searches for things with certain properties and shows them.</p>
-</div>
 </div>
 </div>
 </div>
@@ -1276,7 +1283,7 @@ command.</li>
   "url": "https://swcarpentry.github.io/shell-novice/04-find.html",
   "identifier": "https://swcarpentry.github.io/shell-novice/04-find.html",
   "dateCreated": "2014-10-22",
-  "dateModified": "2026-09-30",
+  "dateModified": "2026-10-02",
   "datePublished": "2026-10-02"
 }
 
