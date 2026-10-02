@@ -39,15 +39,15 @@ script, rather than having to remember or retype a long list of commands.
 ## A first script
 
 Let's start by making sure we are in our lesson directory and creating a new
-file, `hello.sh`, using the `micro` editor we installed earlier:
+file, `hello.sh`, using the `nano` editor we used earlier:
 
 ```bash
 $ cd ~/stfc-carpentries-shell-novice
-$ micro hello.sh
+$ nano hello.sh
 ```
 
-The file does not exist yet, so `micro` creates it.
-Type in the following two lines, then save with <kbd>Ctrl</kbd>+<kbd>S</kbd> and quit with <kbd>Ctrl</kbd>+<kbd>Q</kbd>:
+The file does not exist yet, so `nano` creates it.
+Type in the following two lines, then save with <kbd>Ctrl</kbd>+<kbd>O</kbd> and quit with <kbd>Ctrl</kbd>+<kbd>X</kbd>:
 
 ```source
 echo "Hello from a shell script!"
@@ -84,7 +84,7 @@ By default, Microsoft Word uses `.docx` files to store not only text, but also
 formatting information about fonts, headings, and so on. This extra
 information isn't stored as characters and doesn't mean anything to tools
 like the shell, which expects files to contain nothing but plain text.
-When writing scripts, use a plain text editor such as `micro`, and be careful
+When writing scripts, use a plain text editor such as `nano`, `micro` or `vi`, and be careful
 to save files as plain text.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
