@@ -345,7 +345,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Pipes and Filters</h1>
-        <p>Last updated on 2026-10-02 |
+        <p>Last updated on 2026-10-04 |
 
         <a href="https://github.com/swcarpentry/shell-novice/edit/main/episodes/06-pipefilter.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -774,20 +774,22 @@ appends.</p>
 <pre class="output" tabindex="0"><code>Hello World</code></pre>
 </div>
 <p>See that we still see the output in our terminal</p>
-<div id="cataloging-mythical-creatures" class="callout challenge">
+<div id="is-it-installed" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <span class="callout-header">Challenge</span>
-<div id="cataloging-mythical-creatures" class="callout-inner">
-<h3 class="callout-title">Cataloging Mythical Creatures</h3>
+<div id="is-it-installed" class="callout-inner">
+<h3 class="callout-title">Is it installed?</h3>
 <div class="callout-content">
-<p>Write a single pipeline command that searches for the
-<code>CLASSIFICATION</code> line across all <code>.dat</code> files in
-<code>exercise-data/creatures/</code>, pipes the results into
-<code>tee</code> to write them to <code>creature_species.txt</code>
-while displaying them on screen, and <strong>only if the pipeline
-succeeds</strong>, prints <code>"Creature database updated!"</code>.</p>
+<p>Write a single command that prints <code>figlet is installed</code>
+if <code>figlet</code> appears in the list of installed packages, and
+<code>figlet is NOT installed</code> if it doesn’t.</p>
+<p>Hints: <code>grep</code> exits with status <code>0</code> if it finds
+a match and <code>1</code> if it doesn’t. It will also print any
+matching lines, but you can send those to <code>/dev/null</code>.</p>
+<p>Then try the same command with <code>cowsay</code>, which you removed
+earlier.</p>
 </div>
 </div>
 </div>
@@ -796,29 +798,29 @@ succeeds</strong>, prints <code>"Creature database updated!"</code>.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb34">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" tabindex="-1" aria-label="code-block-34-1"></a><span class="ex">$</span> grep <span class="st">"CLASSIFICATION"</span> creatures/<span class="pp">*</span>.dat <span class="kw">|</span> <span class="fu">tee</span> creature_species.txt <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"Creature database updated!"</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" tabindex="-1" aria-label="code-block-34-1"></a><span class="ex">$</span> apt list <span class="at">--installed</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"^figlet/"</span> <span class="op">&gt;</span> /dev/null <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"figlet is installed"</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"figlet is NOT installed"</span></span></code></pre>
 </div>
-<p><strong>Output:</strong></p>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>creatures/basilisk.dat:CLASSIFICATION: basiliscus vulgaris
-creatures/minotaur.dat:CLASSIFICATION: bos hominus
-creatures/unicorn.dat:CLASSIFICATION: equus monoceros
-Creature database updated!</code></pre>
-</div>
-<p><strong>Explanation:</strong> -
-<code>grep "CLASSIFICATION" creatures/*.dat</code> searches all creature
-dat files for taxonomy lines. - <code>| tee creature_species.txt</code>
-outputs the matches while saving them to
-<code>creature_species.txt</code>. - <code>&amp;&amp;</code> ensures
-<code>echo "Creature database updated!"</code> executes only if the
-preceding commands return an exit code of <code>0</code> (success).</p>
+<ul><li>
+<code>2&gt;/dev/null</code> hides apt’s warning.</li>
+<li>
+<code>grep "^figlet/"</code> matches only a package <em>named</em>
+<code>figlet</code>, rather than any line mentioning it.</li>
+<li>
+<code>&gt; /dev/null</code> discards the matching line, since we
+only care whether there was one.</li>
+<li>
+<code>&amp;&amp;</code> runs the first <code>echo</code> if
+<code>grep</code> found something. <code>||</code> runs the second if it
+didn’t.</li>
+</ul><p>Strictly, <code>A &amp;&amp; B || C</code> isn’t a true if/else: if
+<code>B</code> failed, <code>C</code> would also run. For two
+<code>echo</code>s that doesn’t matter, but in the next episode we’ll
+see how scripts do this properly.</p>
 </div>
 </div>
 </div>
@@ -832,10 +834,10 @@ managing <code>apt</code> packages, <code>apt</code> has itself kept a
 log at <code>/var/log/apt/history.log</code>. That file is very long,
 and the interesting part could be anywhere in it. The tool for browsing
 is <code>less</code>:</p>
-<div class="codewrapper sourceCode" id="cb36">
+<div class="codewrapper sourceCode" id="cb35">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" tabindex="-1" aria-label="code-block-36-1"></a><span class="ex">$</span> less /var/log/apt/history.log</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" tabindex="-1" aria-label="code-block-35-1"></a><span class="ex">$</span> less /var/log/apt/history.log</span></code></pre>
 </div>
 <p>We can navigate the same way as we did with <code>man</code>
 pages.</p>
@@ -943,7 +945,7 @@ or log files (press <kbd>q</kbd> to quit).</li>
   "url": "https://swcarpentry.github.io/shell-novice/06-pipefilter.html",
   "identifier": "https://swcarpentry.github.io/shell-novice/06-pipefilter.html",
   "dateCreated": "2014-10-22",
-  "dateModified": "2026-10-02",
+  "dateModified": "2026-10-04",
   "datePublished": "2026-10-04"
 }
 
