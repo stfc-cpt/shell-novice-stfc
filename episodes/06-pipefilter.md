@@ -326,35 +326,30 @@ Hello World
 
 See that we still see the output in our terminal
 
-:::::::::::::::::::::::::::::::::::::::  challenge
+::::::::::::::::::::::::::::::::::::::: challenge
 
-## Cataloging Mythical Creatures
+### Is it installed?
 
-Write a single pipeline command that searches for the `CLASSIFICATION` line across all `.dat` files in `exercise-data/creatures/`, pipes the results into `tee` to write them to `creature_species.txt` while displaying them on screen, and **only if the pipeline succeeds**, prints `"Creature database updated!"`.
+Write a single command that prints `figlet is installed` if `figlet` appears in the list of installed packages, and `figlet is NOT installed` if it doesn't.
 
-:::::::::::::::  solution
+Hints: `grep` exits with status `0` if it finds a match and `1` if it doesn't. It will also print any matching lines, but you can send those to `/dev/null`.
 
-## Solution
+Then try the same command with `cowsay`, which you removed earlier.
+
+::::::::::::::::::::::::::::::: solution
 
 ```bash
-$ grep "CLASSIFICATION" creatures/*.dat | tee creature_species.txt && echo "Creature database updated!"
+$ apt list --installed 2>/dev/null | grep "^figlet/" > /dev/null && echo "figlet is installed" || echo "figlet is NOT installed"
 ```
 
-**Output:**
-```output
-creatures/basilisk.dat:CLASSIFICATION: basiliscus vulgaris
-creatures/minotaur.dat:CLASSIFICATION: bos hominus
-creatures/unicorn.dat:CLASSIFICATION: equus monoceros
-Creature database updated!
-```
+- `2>/dev/null` hides apt's warning.
+- `grep "^figlet/"` matches only a package *named* `figlet`, rather than any line mentioning it.
+- `> /dev/null` discards the matching line, since we only care whether there was one.
+- `&&` runs the first `echo` if `grep` found something. `||` runs the second if it didn't.
 
-**Explanation:**
-- `grep "CLASSIFICATION" creatures/*.dat` searches all creature dat files for taxonomy lines.
-- `| tee creature_species.txt` outputs the matches while saving them to `creature_species.txt`.
-- `&&` ensures `echo "Creature database updated!"` executes only if the preceding commands return an exit code of `0` (success).
+Strictly, `A && B || C` isn't a true if/else: if `B` failed, `C` would also run. For two `echo`s that doesn't matter, but in the next episode we'll see how scripts do this properly.
 
-:::::::::::::::::::::::::
-
+:::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Browsing long files with `less`
