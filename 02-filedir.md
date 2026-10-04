@@ -892,7 +892,7 @@ To see all of those files, she can press <kbd>Tab</kbd> twice more.
 
 ```bash
 ls north-pacific-gyre/goo
-goodiff.sh   goostats.sh
+goostats-batch.sh   goostats.sh
 ```
 
 This is called **tab completion**,
