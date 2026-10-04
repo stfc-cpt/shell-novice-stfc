@@ -27,7 +27,7 @@ We are going to take the commands we repeat frequently and save them in files
 so that we can re-run all of those operations again later by typing a single
 command.
 A bunch of commands saved in a file is usually called a **shell script**,
-but make no mistake --- these are actually small programs.
+but make no mistake, these are actually small programs.
 
 Not only will writing shell scripts make your work faster, but also you won't have to retype
 the same commands over and over again.
@@ -54,7 +54,7 @@ echo "Hello from a shell script!"
 echo "The time is $(date)"
 ```
 
-A script can contain any of the commands we have met so far --- `ls`, `grep`,
+A script can contain any of the commands we have met so far: `ls`, `grep`,
 `find`, even `sudo apt install`.
 This one prints a greeting and uses the command substitution `$()` we saw in the Finding Things episode to put the current date and time into the message.
 
@@ -105,8 +105,8 @@ echo "The time is $(date)"
 
 The shebang, `#!`, tells the operating system which program should run the
 file. Here it says "run this file with `/bin/bash`". (A shebang can point at
-other interpreters too --- `#!/usr/bin/env python3` at the top of a `.py` file
-is a common sight --- but we will stick to Bash scripts.)
+other interpreters toom `#!/usr/bin/env python3` at the top of a `.py` file
+is a common sight, but we will stick to Bash scripts.)
 
 The second step is to mark the file as executable with `chmod`:
 
@@ -131,11 +131,184 @@ explicitly: "run `hello.sh` from right here".
 
 `chmod` (change mode) sets file permissions.
 `chmod +x hello.sh` adds *execute* permission for everyone.
-There is more to permissions than this --- who may read or modify a file ---
+There is more to permissions than this: who may read or modify a file,
 but `+x` is the part you need to run scripts.
+
+We can view permissions on files with `ls -l`.
+
+We see a string like so:
+`-rwxrwxr-x`
+
+The first letter, `d` or `-` is the file type: a file or a directory usually.
+
+Then we have three trios of `rwx`, or `-` if the permission is denied.
+
+These are for, in order: the individual owner of the file, people in the _group_ that owns the file, and everyone else on the system.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
+## Jovyan's Pipeline: running her scripts
+
+Back to Jovyan's problem. In her `north-pacific-gyre` directory she has a script, `goostats.sh`, that analyses one data file at a time. She asked an LLM to draft a second script, `goostats-batch.sh`, that runs it on many files.
+
+Most scripts you meet will be written by someone else: a colleague, an AI assistant, or an installer from a website. A script runs with all the same permissions you have, so it can read, change and delete any of your files. The important skill isn't writing scripts, it's **reading one before you run it**.
+
+The scripts in this lesson have been checked for you. Don't extend that trust to scripts from anywhere else.
+
+Let's first check on our files:
+
+```bash
+$ cd ~/stfc-carpentries-shell-novice/north-pacific-gyre
+$ ls -F
+```
+
+```output
+goostats-batch.sh*  goostats.sh*  NENE01729A.txt  NENE01729B.txt  ...
+```
+
+The `*` after the script names is the executable marker we met with `ls -F` earlier.
+
+::::::::::::::::::::::::::::::::::::::::: callout
+
+### Exercising caution with AI-generated and third-party scripts
+
+Tools like ChatGPT are good at drafting shell scripts for tedious tasks, and there are many useful bash snippets online on sites like StackOverflow. But you must treat them the same way as you'd treat code from a stranger: carefully reading each line, researching unfamiliar segments, to understand what it reads, creates, modifies and deletes.
+
+**If you can't explain what it does after researching, don't run it.**
+You can usually find another way to do the task, or a colleague to help you.
+
+Be especially wary of:
+
+- Destructive commands like `rm`, or the `>` operator which overwrites files
+- Path arguments which depend on the current folder, or having specific files.
+- `sudo`, which gives the script full administrator power
+- one-liners like `curl/wget <address> | bash`, which download and run a script before you've had a chance to read it. These are often found in scripts which install software.
+- any commands you don't recognise
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+### Read before you run
+
+A script is just a text file, so we can read it with the commands we already know:
+
+```bash
+$ less goostats.sh
+```
+
+You don't need to understand every symbol, but you do need to be able to say what the script reads, what it writes, and what it deletes.
+
+Here's some of the elememnts of `goostats` we might see commonly in scripts:
+
+- **The comments** (lines starting with `#`) usually say what the script is for and how to use it. Start there.
+- **`$1` and `$2`** are the first and second *arguments* given to the script, `$#` is how many there were, and `$0` is the script's own name.
+- **`if … then … fi`** is a check. Read it as English. `[ $# -ne 2 ]` means "the number of arguments is **n**ot **e**qual to 2". `[ -e "$2" ]` means "file `$2` **e**xists", and `!` means "not".
+- **`>&2`** sends a message to stderr, the error stream from the pipes episode.
+- **`exit 1`** stops the script and reports failure. Zero means success, anything else means failure.
+- **The last line** does the actual work. It's a pipeline, using commands we know (`head`, `|`, `>`) and one we don't (`cut`).
+
+::::::::::::::::::::::::::::::::::::::: challenge
+
+### Understanding an unfamiliar line
+
+What does `cut -d , -f 1` do? Work it out with `man cut`.
+
+What about `sort` and `uniq`?
+
+Then paste the last line of `goostats.sh` into an AI assistant and ask it to explain. Does its answer match the manual?
+
+Could you now say what this script reads, writes and deletes, before running it?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+### Running it
+
+Run it with no arguments:
+
+```bash
+$ ./goostats.sh
+```
+
+```output
+Usage: ./goostats.sh input_file result_file
+```
+
+The script tells us how to use it.
+
+Now run it properly on one file, giving an input and a name for the result:
+
+```bash
+$ ./goostats.sh NENE01729A.txt stats-NENE01729A.txt
+$ cat stats-NENE01729A.txt
+```
+
+Run the same command again:
+
+```bash
+$ ./goostats.sh NENE01729A.txt stats-NENE01729A.txt
+```
+
+```output
+Error: stats-NENE01729A.txt already exists
+```
+
+The script refused to overwrite the earlier result, unlike `>` which would do so silently.
+This is due to the second of the file checks.
+
+Remove the file before continuing: `rm stats-NENE01729A.txt`.
+
+### One command for every file
+
+Running this by hand for every sample is exactly the problem from the start of the lesson.
+
+Jovyan created `goostats-batch.sh` to solve it. Read it first:
+
+```bash
+$ less goostats-batch.sh
+```
+
+The comments tell us most of what we need. The new part is the `for` loop. Read `"$@"` as "all the arguments", so the loop runs `goostats.sh` once for each file we pass in.
+
+So how do we pass in a thousand files? With a wildcard:
+
+```bash
+$ ./goostats-batch.sh NENE*.txt
+```
+
+```output
+Processing NENE01729A.txt
+Processing NENE01729B.txt
+...
+```
+
+The shell expands `NENE*.txt` into the list of all matching files **before** the script starts, just as it does for `cp`. The script receives them as separate arguments. If it's taking too long, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it. Then look at the results:
+
+```bash
+$ ls stats-*
+```
+
+Clear them with `rm stats-*` before continuing.
+
+::::::::::::::::::::::::::::::::::::::: challenge
+
+### Spot the danger
+
+A colleague sends you `tidy.sh` to clear out old results:
+
+```bash
+#!/bin/bash
+cd old-results
+rm -r *
+```
+
+You're in a directory that has no `old-results` folder. What happens if you run it?
+
+::::::::::::::::::::::::::::: solution
+
+`cd` fails with an error, but the script **carries on** to the next line, so `rm -r *` runs in the directory you were already in and deletes everything there. Joining the commands with `&&` (`cd old-results && rm -r *`) means `rm` only runs if `cd` worked. This is why reading a script before running it matters.
+
+:::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 ## Running vs. sourcing
 
 There is a second, subtler way to run a script: `source`.
@@ -217,7 +390,7 @@ pip         pip3            pip3.12          python
 python3     python3.12
 ```
 
-Activating the environment is a textbook case of *sourcing*:
+Activating the environment is a textbook case of *sourcing* as we want it to affect our current shell:
 
 ```bash
 $ source myenv/bin/activate
@@ -239,7 +412,7 @@ $ which python3
 ```
 
 Packages we install now go into the venv, not the system.
-As an example, install `pyfiglet` --- the same idea as the `figlet` program
+As an example, install `pyfiglet`: the same idea as the `figlet` program
 you installed with `apt`, but this time from the Python Package Index:
 
 ```bash
@@ -256,7 +429,7 @@ Successfully installed pyfiglet-1.0.4
 Then:
 
 ```bash
-$ python3 -c "import pyfiglet; print(pyfiglet.figlet_format('Hello!'))"
+$ python3 -c 'import pyfiglet; print(pyfiglet.figlet_format("Hello!"))'
 ```
 
 ```output
@@ -286,10 +459,7 @@ This is why Python guides tell you to `source` the activate script.
 ## If the `venv` module is missing
 
 On a plain Ubuntu machine, the `venv` module sometimes needs to be
-installed first with `sudo apt install python3.12-venv` --- one more
-practical use for the `apt` commands from a few episodes ago.
-On our JupyterHub servers it is already available.
-
+installed first with `sudo apt install python3.12-venv`
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::  challenge
@@ -330,50 +500,12 @@ line each time the script runs.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::::  challenge
-
-## Run it or source it?
-
-Your colleague has a script `setup.sh` that sets an alias they use every
-day. They complain: "I ran `bash setup.sh` and the alias is gone the moment
-the script finishes!" What went wrong, and what should they type instead?
-
-:::::::::::::::  solution
-
-## Solution
-
-`bash setup.sh` runs the script in a new shell that exits when the script
-ends, so anything it defines (like the alias) vanishes with it.
-They should run `source setup.sh` so the commands execute in their current
-shell.
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Using LLMs to draft scripts
-
-Tools like ChatGPT are good at drafting shell scripts, and it is fine to use
-them --- with care.
-
-- Read every line before you run it, and make sure you understand what it does.
-- Test on files you can afford to lose, or on copies first.
-- Never paste passwords, API keys or personal data into a prompt.
-- Watch out for made-up options: if a flag looks odd, check the `man` page.
-
-A script is a small program --- treat an AI-written one exactly as you would
-treat a stranger's code.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
 :::::::::::::::::::::::::::::::::::::::::  callout
 
 ## Going further
 
 We have kept scripts deliberately simple here. The full Carpentries material
-covers variables, command-line arguments and loops in shell scripts --- see
+covers variables, command-line arguments and loops in shell scripts: see
 the [original shell-novice lesson](https://swcarpentry.github.io/shell-novice/)
 if you want to go further.
 
@@ -383,8 +515,8 @@ if you want to go further.
 
 - A shell script is a file of commands, run with `bash script.sh`.
 - Add a shebang (`#!/bin/bash`) and `chmod +x` to run a script directly as `./script.sh`.
+- Review any script (including AI-drafted ones) line by line before running it.
 - `bash script.sh` and `./script.sh` run in a new shell; `source script.sh` runs in the current shell.
 - Python virtual environments are activated by *sourcing* their `activate` script and left with `deactivate`.
-- Review any script (including AI-drafted ones) line by line before running it.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
