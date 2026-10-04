@@ -5,22 +5,24 @@
 # check for the right number of input arguments
 if [ $# -ne 2 ]
 then
-    echo "call goostats with two arguments:" >&2
-    echo "  $0 input_file result_file" >&2
+    echo "Usage: $0 input_file result_file" >&2
     exit 1
 fi
 
-# check if files already exist (good for $1, bad for $2)
+# Check the input file exists
 if [ ! -e "$1" ]
 then
-    echo "error reading input: file $1 does not exist" >&2
+    echo "Error: $1 does not exist" >&2
     exit 2
-elif [ -e "$2" ]
+fi
+
+# Don't overwrite earlier results
+if [ -e "$2" ]
 then
-    echo "error writing result: file $2 already exists" >&2
+    echo "Error: $2 already exists" >&2
     exit 2
 fi
 
 # run the numbers
-sleep 2
+sleep 0.2
 head -n 3 "$1" | cut -d , -f 1 | sort | uniq > "$2"
