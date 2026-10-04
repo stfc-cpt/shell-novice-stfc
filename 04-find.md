@@ -742,46 +742,6 @@ without opening them one by one.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Binary Files
-
-We have focused exclusively on finding patterns in text files. What if
-your data is stored as images, in databases, or in some other format?
-
-A handful of tools extend `grep` to handle a few non text formats. But a
-more generalizable approach is to convert the data to text, or
-extract the text-like elements from the data. On the one hand, it makes simple
-things easy to do. On the other hand, complex things are usually impossible. For
-example, it's easy enough to write a program that will extract X and Y
-dimensions from image files for `grep` to play with, but how would you
-write something to find values in a spreadsheet whose cells contained
-formulas?
-
-A last option is to recognize that the shell and text processing have
-their limits, and to use another programming language.
-When the time comes to do this, don't be too hard on the shell. Many
-modern programming languages have borrowed a lot of
-ideas from it, and imitation is also the sincerest form of praise.
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-The Unix shell is older than most of the people who use it. It has
-survived so long because it is one of the most productive programming
-environments ever created --- maybe even *the* most productive. Its syntax
-may be cryptic, but people who have mastered it can experiment with
-different commands interactively, then use what they have learned to
-automate their work. Graphical user interfaces may be easier to use at
-first, but once learned, the productivity in the shell is unbeatable.
-And as Alfred North Whitehead wrote in 1911, 'Civilization advances by
-extending the number of important operations which we can perform
-without thinking about them.'
-
-
-
-
-
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - `find` finds files with specific properties that match patterns.
