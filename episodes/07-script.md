@@ -511,6 +511,17 @@ if you want to go further.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
+The Unix shell is older than most of the people who use it. It has
+survived so long because it is one of the most productive programming
+environments ever created --- maybe even *the* most productive. Its syntax
+may be cryptic, but people who have mastered it can experiment with
+different commands interactively, then use what they have learned to
+automate their work. Graphical user interfaces may be easier to use at
+first, but once learned, the productivity in the shell is unbeatable.
+And as Alfred North Whitehead wrote in 1911, 'Civilization advances by
+extending the number of important operations which we can perform
+without thinking about them.'
+
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - A shell script is a file of commands, run with `bash script.sh`.
