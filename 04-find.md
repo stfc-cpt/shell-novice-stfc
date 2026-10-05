@@ -239,12 +239,34 @@ fortune loop. Both prompts come back.
 This is how you follow a running job's log:
 leave `tail -f` open while the job writes to the file.
 
-Later in the lesson we will also meet `less`,
-for browsing a long file one screen at a time.
+## Browsing long files with `less`
+
+We've now met `head` and `tail` for looking at the start and the end of a file.
+
+But we have one more useful tool for browsing long files: `less`.
+
+```bash
+$ less LittleWomen.txt
+```
+
+This is the same interface we used to browse `man` pages, so we can navigate the same way.
+
+We go up and down with <kbd>↑</kbd> and <kbd>↓</kbd>
+
+To go to the end, press capital <kbd>G</kbd>. And for the start, <kbd>g</kbd>
+
+To search, use <kbd>/</kbd> followed by the word you are searching for.
+
+Sometimes a search will result in multiple hits.
+If so, you can move between hits using <kbd>N</kbd> (for moving forward) and
+<kbd>Shift</kbd>\+<kbd>N</kbd> (for moving backward).
+
+To **quit** `less`, press <kbd>q</kbd>.
 
 ## Finding lines in files
 
-Going back to our haikus, let's find lines that contain the word 'not' using Grep:
+Going back to our haikus, let's find lines that contain the word 'not' using `grep`,
+a commandline tool:
 
 ```bash
 $ grep not haiku.txt
@@ -520,7 +542,7 @@ $ grep -w "deer" animals.csv
 2012-11-06,deer,2
 ```
 
-The `-w` option restricts matches to whole words,
+The `-w` option restricts matches to whol e words,
 so a hypothetical species called `deerhound` would not be matched.
 
 :::::::::::::::::::::::::
@@ -747,6 +769,7 @@ without opening them one by one.
 - `find` finds files with specific properties that match patterns.
 - `cat [file(s)]` prints the contents of files to the screen, joining multiple files together.
 - `head` and `tail` show the start or end of a file (10 lines by default, `-n` changes the number); `tail -f` follows a file as it grows.
+- `less` allows interactive navigation through text streams or log files (press <kbd>q</kbd> to quit).
 - `grep` selects lines in files that match patterns.
 - `--help` is an option supported by many bash commands, and programs that can be run from within Bash, to display more information on how to use these commands or programs.
 - `man [command]` displays the manual page for a given command.

@@ -352,32 +352,6 @@ Strictly, `A && B || C` isn't a true if/else: if `B` failed, `C` would also run.
 :::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Browsing long files with `less`
-
-In Finding Things we met `head` and `tail` for looking at the start and the end of a file.
-But while we've been managing `apt` packages, `apt` has itself kept a log at
-`/var/log/apt/history.log`.
-That file is very long, and the interesting part could be anywhere in it.
-The tool for browsing is `less`:
-
-```bash
-$ less /var/log/apt/history.log
-```
-
-We can navigate the same way as we did with `man` pages.
-
-We go up and down with <kbd>↑</kbd> and <kbd>↓</kbd>
-
-To go to the end, press capital <kbd>G</kbd>. And for the start, <kbd>g</kbd>
-
-To search, use <kbd>/</kbd> followed by the word you are searching for.
-
-Sometimes a search will result in multiple hits.
-If so, you can move between hits using <kbd>N</kbd> (for moving forward) and
-<kbd>Shift</kbd>\+<kbd>N</kbd> (for moving backward).
-
-To **quit** `less`, press <kbd>q</kbd>.
-
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - `[command1] | [command2]` streams output from `command1` into input of `command2`.
@@ -387,6 +361,5 @@ To **quit** `less`, press <kbd>q</kbd>.
 - `command1 ; command2` runs commands sequentially regardless of success or failure.
 - `command1 && command2` runs `command2` ONLY if `command1` succeeds (returns exit code 0).
 - `command1 || command2` runs `command2` ONLY if `command1` fails (returns a non-zero exit code).
-- `less` allows interactive navigation through text streams or log files (press <kbd>q</kbd> to quit).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
